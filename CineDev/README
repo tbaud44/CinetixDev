@@ -1,0 +1,123 @@
+Introduction
+************
+Ce projet consiste à une reecriture d'une application ecrite en VB sous windows NT.Suite aux incidents survenu en mars 2017 sur
+cette application (plantage recurrent) et le fait que le concepteur/developpeur soit parti, il a ete juge opportun de reecrire cette application en respectant ces principes :
+- Conserver le mode operatoire existant et l'aspect de l'interface graphique afin de ne pas gener les utilisateurs 
+- Conserver les fonctionnalites existantes
+- Choisir une technologie portable et independante de l'OS (windows NT) et d'une librairie (vlc).Choix du langage python sur un OS linux
+- documenter le code et fournir un modele de conception
+- Enrichir l'application avec des fonctionnalites nouvelles.
+
+Il existe 2 modes d'installation de cette application. Le premier,le plus simple, (Mode simplifié) permet d'executer l'application sans pouvoir la modifier ou la reconfigurer.
+Le deuxième mode est orienté developpeur informatique et permet de pouvoir modifier l'application.En particulier, il est possible de travailler en mode collaboratif grace
+à l'utilisation d'un serveur de depot centralisant tous les fichiers propres à l'application. Le chois s'est porte sur git et le service web github car git est intégré à eclipse
+et github propose un service gratuit (le code est en acces libre).
+
+Installation (Mode simplifié)
+*****************************
+Prerequis
+---------
+	PC fonctionnant sous windows, linux ou MAC
+	connexion internet (pour l'installation de l'application uniquement)
+	Double ecran (Ecran1 pour le PC et Ecran2 pour la salle cinema au format HDMI) en mode salle de cinema (fonctionne aussi
+		avec un seul ecran en mode dev)
+	resolution Ecran1 1360x768
+	resolution Ecran2 (a voir sur place la config actuelle)
+	
+Python
+------
+	https://www.python.org/downloads/
+	prendre derniere version 3.6.x
+
+python - librairies
+-------------------
+	Ajout de librairies complementaires à l'interpreteur python
+	ouvrer un terminal et taper:
+	
+	python -m pip install progressbar2
+	python -m pip install beautifulsoup4
+	python -m pip install pillow
+
+application CINETIX
+-------------------
+	Recuperer le fichier archive sur le depot
+	Au 05/08/2017(version 1.0.1beta)
+	https://github.com/tbaud44/beaulieuCine/archive/1.0.0.zip
+
+Execution
+---------
+Avec un terminal (cmd dos ou shell) :
+ position chemin appli variable CINEPATH dans cinetix.bat ou cinetix.sh
+ executer cinetix.sh(bat) 
+
+
+Installation (Mode developpeur)
+*******************************
+Suivre etapes Prerequis et  Installation (Mode simplifié) avec python et puthon librairies
+
+Eclipse Core
+------------
+AGL permettant de debugger, modifier et tester l'application
+Prendre version neon ou plus recent
+https://www.eclipse.org/downloads/
+
+Eclipse - pydev
+---------------
+plugin eclipse permettant de gerer le code python
+Help - Install New softare
+pydev - http://www.pydev.org/updates
+
+Eclipse - application CINETIX
+-----------------------------
+application ecrite en python permettant la gestion des bandes annonces du cinema
+Prerequis: creer un compte github sur https://github.com/ (gratuit :))
+Suivre guide sur https://openclassrooms.com/courses/egit-quand-git-s-invite-dans-eclipse (Importer un projet hébergé sur GitHub)
+L'URI du depot github est: https://github.com/tbaud44/beaulieuCine (le depot est en visu public donc gratuit) et selectionner dossier CINETIXV3
+
+Eclipse Modeler (optionnel)
+---------------------------
+AGL perlettant de modeliser en UML la conception applicative.Utilise le composant papyrus
+Divers diagrammes UML ont ete elabores afin de documenter l'application et permettre une meilleure comprehension du code
+Les diagrammes sont consultables dans le dossier doc du projets au format pdf
+
+Au 02/08/2017, 4 diagrammes ont ete crées (diagramme exportes en pdf dans le dossier docs de l'application CINETIX) :
+	-1 Diag cas utilisation
+	-2 Diag de classes
+	-1 Diag de sequence	
+Prendre version galileo ou plus recent de Eclipse Modeling Tools
+http://www.eclipse.org/downloads/packages/eclipse-modeling-tools-includes-incubating-components/galileosr2
+Menu Help - Install Modeling Component et choisir papyrus
+
+Prerequis: creer un compte github sur https://github.com/ (gratuit :))
+Suivre guide sur https://openclassrooms.com/courses/egit-quand-git-s-invite-dans-eclipse (Importer un projet hébergé sur GitHub)
+L'URI du depot github est: https://github.com/tbaud44/beaulieuCine (le depot est en visu public donc gratuit) et selectionner dossier CinetixConception
+
+Execution
+---------
+Selectionner et editer le fichier Cinetix.py
+ Modifier au besoin la ligne en l'adaptant à votre configuration (definit repertoire courant) : os.chdir("C:/Users/HOME/git/CINETIXV3")
+ clic droit : Runs as python run
+		=>l'application se lance
+
+Nouvelles fonctionnalites
+*************************
+	-Typage des videos (pub, ba, animBeaulieu) permettant d'avoir un meilleur visuel et de gerer infos complementaire
+	(titre, date fichier, affiche pour les ba, contact pour la pub)
+	-Tri par nom ou date de la bibliotheques des videos (demande de jean marc)
+	-Duree globale d'une playlist
+	-Ajout de messages d'erreur/avertissement à l'écran
+	-Controle d'une playlist (la video de la bande annonce ne doit pas etre dans la liste si le film de la BA est projete)
+	-Lecteur interne de videos (vlc)
+	-Correction du bug des caracteres speciaux dans le nom des fichiers video
+
+fonctionnalites à implementer (non codée à ce jour le 05/08)
+************************************************************
+	-Affichage d'une liste de dependances entre une video de type BA et les playlists qui reference cette BA en projection
+	-Affichage d'un calendrier indiquant, pour chaque jour, le nombre de playlists crées par l'administrateur:
+		0 aucune playlist pour ce jour (coloration de la case jour spécifique)
+		1 1 playlist pour ce jour (un clique sur le jour charge la PL correspondante)(coloration de la case jour spécifique)
+		2 ou 3 ... plusieurs playlists pour ce jour (coloration de la case jour spécifique)
+		Calcul à partir de la date du jour -n jusqu'a la date du jour + m (intervalle de temps fixe)
+	-Affichage dans une frame de la video en lecture issue de la webcam installée dans le hall du cinema (demande de bernard)			
+
+
