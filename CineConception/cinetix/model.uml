@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_MkTOUF0BEeeU2ZRiAHXbYQ" name="RootElement">
+  <ownedComment xmi:type="uml:Comment" xmi:id="_4aV_8F3QEeeZjNIPd42fBQ" annotatedElement="_QXDtMF3QEeeZjNIPd42fBQ">
+    <body>Fenetre secondaire (classe gerant la fenetre du mot de passe admin)
+</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_UJ2z8F3REeeZjNIPd42fBQ" annotatedElement="_t1pkEF3OEeeZjNIPd42fBQ">
+    <body>classe gerant les objets graphiques fenetre principale&#xD;
+&#xD;
+</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_94f1QF3REeeZjNIPd42fBQ" annotatedElement="_s_pBwF3REeeZjNIPd42fBQ _oZG7gF3REeeZjNIPd42fBQ _iZka8F3REeeZjNIPd42fBQ">
+    <body>objets graphiques complexes (VLC lecteur, barre progression, camembert temps)
+</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_z7ggUF3UEeeZjNIPd42fBQ" annotatedElement="_wR94sF3SEeeZjNIPd42fBQ">
+    <body>classe gerant les evenements utilisateur comme les clics sur objets graphiques (proxy vers objets Manager)
+</body>
+  </ownedComment>
+  <ownedComment xmi:type="uml:Comment" xmi:id="_2NTHUF3VEeeZjNIPd42fBQ" annotatedElement="_ZbE5IF3VEeeZjNIPd42fBQ">
+    <body>Fenetre secondaire (formulaire
+d'une video)
+</body>
+  </ownedComment>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_NMYiAF0BEeeU2ZRiAHXbYQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_YibNMF0BEeeU2ZRiAHXbYQ" name="Admin"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_4e4iwF0BEeeU2ZRiAHXbYQ" name="creer PL">
+    <extensionPoint xmi:type="uml:ExtensionPoint" xmi:id="_sHLd4F0PEeeZjNIPd42fBQ" name="ExtensionPoint1"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_HOE7EF0CEeeU2ZRiAHXbYQ" name="Projectionniste"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_R_aWsF0CEeeU2ZRiAHXbYQ" name="Authentifie">
+    <extend xmi:type="uml:Extend" xmi:id="_sHEwMF0PEeeZjNIPd42fBQ" extendedCase="_4e4iwF0BEeeU2ZRiAHXbYQ" extensionLocation="_sHLd4F0PEeeZjNIPd42fBQ">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_0pbLwF0PEeeZjNIPd42fBQ" annotatedElement="_sHEwMF0PEeeZjNIPd42fBQ">
+        <body>si souhait modif timer 20 secondes</body>
+      </ownedComment>
+    </extend>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_m_0OYF0CEeeU2ZRiAHXbYQ" name="jouePL"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_u2HcQF0CEeeU2ZRiAHXbYQ" memberEnd="_u26GcF0CEeeU2ZRiAHXbYQ _u27UkF0CEeeU2ZRiAHXbYQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_u22cEF0CEeeU2ZRiAHXbYQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_u23DIF0CEeeU2ZRiAHXbYQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_u26GcF0CEeeU2ZRiAHXbYQ" name="authentifie" type="_R_aWsF0CEeeU2ZRiAHXbYQ" association="_u2HcQF0CEeeU2ZRiAHXbYQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_u27UkF0CEeeU2ZRiAHXbYQ" name="admin" type="_YibNMF0BEeeU2ZRiAHXbYQ" association="_u2HcQF0CEeeU2ZRiAHXbYQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_2lUjoF0CEeeU2ZRiAHXbYQ" memberEnd="_2lW_4F0CEeeU2ZRiAHXbYQ _2lXm8F0CEeeU2ZRiAHXbYQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_2lWY0F0CEeeU2ZRiAHXbYQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_2lWY0V0CEeeU2ZRiAHXbYQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_2lW_4F0CEeeU2ZRiAHXbYQ" name="creer pl" type="_4e4iwF0BEeeU2ZRiAHXbYQ" association="_2lUjoF0CEeeU2ZRiAHXbYQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_2lXm8F0CEeeU2ZRiAHXbYQ" name="admin" type="_YibNMF0BEeeU2ZRiAHXbYQ" association="_2lUjoF0CEeeU2ZRiAHXbYQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_BcorcF0DEeeU2ZRiAHXbYQ" memberEnd="_BcrHsF0DEeeU2ZRiAHXbYQ _BcruwF0DEeeU2ZRiAHXbYQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Bcp5kF0DEeeU2ZRiAHXbYQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_BcqgoF0DEeeU2ZRiAHXbYQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_BcrHsF0DEeeU2ZRiAHXbYQ" name="jouepl" type="_m_0OYF0CEeeU2ZRiAHXbYQ" association="_BcorcF0DEeeU2ZRiAHXbYQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_BcruwF0DEeeU2ZRiAHXbYQ" name="projectionniste" type="_HOE7EF0CEeeU2ZRiAHXbYQ" association="_BcorcF0DEeeU2ZRiAHXbYQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_Crg5YF0DEeeU2ZRiAHXbYQ" name="Scaler"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_P96QoF0QEeeZjNIPd42fBQ" memberEnd="_P-WVgF0QEeeZjNIPd42fBQ _P-W8kF0QEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_P-SrIF0QEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_P-T5QF0QEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_P-WVgF0QEeeZjNIPd42fBQ" name="scaler" type="_Crg5YF0DEeeU2ZRiAHXbYQ" association="_P96QoF0QEeeZjNIPd42fBQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_P-W8kF0QEeeZjNIPd42fBQ" name="jouepl" type="_m_0OYF0CEeeU2ZRiAHXbYQ" association="_P96QoF0QEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_Y4_VQF0QEeeZjNIPd42fBQ" name="importe video"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_dXzC4F0QEeeZjNIPd42fBQ" memberEnd="_dX0RAV0QEeeZjNIPd42fBQ _dX04EF0QEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_dXzp8F0QEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_dX0RAF0QEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_dX0RAV0QEeeZjNIPd42fBQ" name="importe video" type="_Y4_VQF0QEeeZjNIPd42fBQ" association="_dXzC4F0QEeeZjNIPd42fBQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_dX04EF0QEeeZjNIPd42fBQ" name="admin" type="_YibNMF0BEeeU2ZRiAHXbYQ" association="_dXzC4F0QEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_t1pkEF3OEeeZjNIPd42fBQ" name="Interface">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_JV73AV3UEeeZjNIPd42fBQ" name="pbar" type="_iZka8F3REeeZjNIPd42fBQ" association="_JV6o4F3UEeeZjNIPd42fBQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_OA3VEV3UEeeZjNIPd42fBQ" name="timerba" type="_oZG7gF3REeeZjNIPd42fBQ" association="_OA2G8F3UEeeZjNIPd42fBQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_QtHf8V3UEeeZjNIPd42fBQ" name="evtihm" type="_wR94sF3SEeeZjNIPd42fBQ" association="_QtFqwF3UEeeZjNIPd42fBQ"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_boLRkF3PEeeZjNIPd42fBQ" name="dessiner"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_skS3AGV7EeeZNOmQc3Y8kg" name="mainLoop"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_yKwJMGV7EeeZNOmQc3Y8kg" name="afficherFrameAdmin"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="__tMagGV7EeeZNOmQc3Y8kg" name="initialiserDonnees"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_LuMHMGV8EeeZNOmQc3Y8kg" name="miseAJourHeure"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_RSnZEGV8EeeZNOmQc3Y8kg" name="creerMenuContextuel"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_QXDtMF3QEeeZjNIPd42fBQ" name="PassIHM">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_a_4tEF3QEeeZjNIPd42fBQ" name="afficher"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_zqH0wGV8EeeZNOmQc3Y8kg" name="__validerPassword"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_iZka8F3REeeZjNIPd42fBQ" name="Pbar">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_drZ6sGV8EeeZNOmQc3Y8kg" name="demarrer"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_htlWsGV8EeeZNOmQc3Y8kg" name="afficherTempsRestant"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_oZG7gF3REeeZjNIPd42fBQ" name="TimerBA">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_lbBRwGV8EeeZNOmQc3Y8kg" name="afficherChrono"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_nqGYcGV8EeeZNOmQc3Y8kg" name="reinitialiser"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_s_pBwF3REeeZjNIPd42fBQ" name="Player">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_4vukoF3REeeZjNIPd42fBQ" name="play"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_7hI8UF3REeeZjNIPd42fBQ" name="getDuration"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wR94sF3SEeeZjNIPd42fBQ" name="EvtIHM">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_ufI-QF3UEeeZjNIPd42fBQ" name="passihm" type="_QXDtMF3QEeeZjNIPd42fBQ" association="_ufHwIF3UEeeZjNIPd42fBQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_v1lXUF3VEeeZjNIPd42fBQ" name="fiche" type="_ZbE5IF3VEeeZjNIPd42fBQ" association="_v1kJMF3VEeeZjNIPd42fBQ"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_3Way4F3SEeeZjNIPd42fBQ" name="transfertCurrentVideoEntetePL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_8isDcF3SEeeZjNIPd42fBQ" name="ajouterVideoPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_EjwW4F3TEeeZjNIPd42fBQ" name="initialiserVideosBibliIHM"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_SGjNgF3TEeeZjNIPd42fBQ" name="selectFicheVideo"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_ZAKJoF3TEeeZjNIPd42fBQ" name="playVideoPC"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_rOmQAF3TEeeZjNIPd42fBQ" name="enregistrerVideoBiblioGenerale"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_wnau0F3TEeeZjNIPd42fBQ" name="playPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_21TNYF3TEeeZjNIPd42fBQ" name="inverserVideoPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_atR9UF3UEeeZjNIPd42fBQ" name="enregistrerPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_jHr90F3UEeeZjNIPd42fBQ" name="viderPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_n1M10F3UEeeZjNIPd42fBQ" name="supprimerVideoPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_JW5q4F3VEeeZjNIPd42fBQ" name="chargerPL"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_JV6o4F3UEeeZjNIPd42fBQ" memberEnd="_JV73AV3UEeeZjNIPd42fBQ _JV8eEF3UEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_JV7P8F3UEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_JV73AF3UEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_JV8eEF3UEeeZjNIPd42fBQ" name="interface" type="_t1pkEF3OEeeZjNIPd42fBQ" association="_JV6o4F3UEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_OA2G8F3UEeeZjNIPd42fBQ" memberEnd="_OA3VEV3UEeeZjNIPd42fBQ _OA38IF3UEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_OA2uAF3UEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_OA3VEF3UEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_OA38IF3UEeeZjNIPd42fBQ" name="interface" type="_t1pkEF3OEeeZjNIPd42fBQ" association="_OA2G8F3UEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_QtFqwF3UEeeZjNIPd42fBQ" memberEnd="_QtHf8V3UEeeZjNIPd42fBQ _QtIuEF3UEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_QtG44F3UEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_QtHf8F3UEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_QtIuEF3UEeeZjNIPd42fBQ" name="interface" type="_t1pkEF3OEeeZjNIPd42fBQ" association="_QtFqwF3UEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_ufHwIF3UEeeZjNIPd42fBQ" memberEnd="_ufI-QF3UEeeZjNIPd42fBQ _ufI-QV3UEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ufIXMF3UEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_ufIXMV3UEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_ufI-QV3UEeeZjNIPd42fBQ" name="evtihm" type="_wR94sF3SEeeZjNIPd42fBQ" association="_ufHwIF3UEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_ZbE5IF3VEeeZjNIPd42fBQ" name="Fiche">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_oGQ7MF3VEeeZjNIPd42fBQ" name="afficher"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_8R4UwGV8EeeZNOmQc3Y8kg" name="__enregistrerFicheVideo"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_v1kJMF3VEeeZjNIPd42fBQ" memberEnd="_v1lXUF3VEeeZjNIPd42fBQ _v1l-YF3VEeeZjNIPd42fBQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_v1kwQF3VEeeZjNIPd42fBQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_v1kwQV3VEeeZjNIPd42fBQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_v1l-YF3VEeeZjNIPd42fBQ" name="evtihm" type="_wR94sF3SEeeZjNIPd42fBQ" association="_v1kJMF3VEeeZjNIPd42fBQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_u9xGcGMjEeeZNOmQc3Y8kg" name="BiblioManager">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_r4-DQGMkEeeZNOmQc3Y8kg" name="biblioGenerale" visibility="public"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_2D_s0GMkEeeZNOmQc3Y8kg" name="__load"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_5vDCQGMkEeeZNOmQc3Y8kg" name="__purger"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_-9TP0GMkEeeZNOmQc3Y8kg" name="save"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_JJEq0GMmEeeZNOmQc3Y8kg" name="getAllVideosTriees"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_UY6AUGMmEeeZNOmQc3Y8kg" name="scanDisk">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_auS1EGMmEeeZNOmQc3Y8kg" annotatedElement="_UY6AUGMmEeeZNOmQc3Y8kg">
+        <body>compare le repertoire de la bibliotheque avec l'objet memoire</body>
+      </ownedComment>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_xCPYQGMmEeeZNOmQc3Y8kg" name="enregistrerVideo"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_y3IdUGMmEeeZNOmQc3Y8kg" name="rechercherVideo">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_5EkP8GMmEeeZNOmQc3Y8kg" annotatedElement="_y3IdUGMmEeeZNOmQc3Y8kg">
+        <body>recherche une video selon son nomfichier ou titre</body>
+      </ownedComment>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_9E0ZUGMmEeeZNOmQc3Y8kg" name="validerPasswordAdmin">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_GndNMGMnEeeZNOmQc3Y8kg" annotatedElement="_9E0ZUGMmEeeZNOmQc3Y8kg">
+        <body>methode qui compare le mot de passe avec le mot de passe cripte dans config.ini
+        retourne true ou False selon la comparaison</body>
+      </ownedComment>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_R1FjQGMnEeeZNOmQc3Y8kg" name="rechercherInfosWebVideo"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_8V2P8GMlEeeZNOmQc3Y8kg" name="serialisation/deserialisation des videos"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_WSwocGMnEeeZNOmQc3Y8kg" name="PlayListManager">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_7PjEUGMnEeeZNOmQc3Y8kg" name="bibliomanager" type="_u9xGcGMjEeeZNOmQc3Y8kg" association="_7PfZ8GMnEeeZNOmQc3Y8kg"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_eWWEYGMnEeeZNOmQc3Y8kg" name="calculerNomIHMPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_tU9_0GMnEeeZNOmQc3Y8kg" name="enregistrerPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_f7RlYGMoEeeZNOmQc3Y8kg" name="load"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_VtBMkHb7Eeet_IAWAg9t7g" name="rechercherPLProcheDate"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_7PfZ8GMnEeeZNOmQc3Y8kg" memberEnd="_7PjEUGMnEeeZNOmQc3Y8kg _7PjEUWMnEeeZNOmQc3Y8kg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_7PhPIGMnEeeZNOmQc3Y8kg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_7Ph2MGMnEeeZNOmQc3Y8kg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_7PjEUWMnEeeZNOmQc3Y8kg" name="playlistmanager" type="_WSwocGMnEeeZNOmQc3Y8kg" association="_7PfZ8GMnEeeZNOmQc3Y8kg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_WnRDYGMoEeeZNOmQc3Y8kg">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_aj20wGMoEeeZNOmQc3Y8kg" annotatedElement="_WnRDYGMoEeeZNOmQc3Y8kg">
+      <body>serialisation/deserialisation des playlists</body>
+    </ownedComment>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_nCSEUGMoEeeZNOmQc3Y8kg" name="Video">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_rGmOUGMoEeeZNOmQc3Y8kg" name="nomFichier"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_teDN4GMoEeeZNOmQc3Y8kg" name="duree"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_uiefUGMoEeeZNOmQc3Y8kg" name="titre"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_BGsBYGMpEeeZNOmQc3Y8kg" name="type" visibility="public"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_DuE6YGMpEeeZNOmQc3Y8kg" name="color"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_Fto-YGMpEeeZNOmQc3Y8kg" name="dateFichier"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_I2wEYGMpEeeZNOmQc3Y8kg" name="getNom"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_UAtbYGMpEeeZNOmQc3Y8kg" name="Type">
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_XoL4YGMpEeeZNOmQc3Y8kg" name="INCONNU"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_Z1SCEGMpEeeZNOmQc3Y8kg" name="BA"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_ePkcEGMpEeeZNOmQc3Y8kg" name="PUB"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fXLkYGMpEeeZNOmQc3Y8kg" name="ANIM_BEAULIEU"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_qd3k8GMpEeeZNOmQc3Y8kg" client="_nCSEUGMoEeeZNOmQc3Y8kg" supplier="_UAtbYGMpEeeZNOmQc3Y8kg"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sy8l8GMpEeeZNOmQc3Y8kg" name="PUB">
+    <generalization xmi:type="uml:Generalization" xmi:id="_zT5KcGMpEeeZNOmQc3Y8kg" general="_nCSEUGMoEeeZNOmQc3Y8kg"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_up9K4GMpEeeZNOmQc3Y8kg" name="contact"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_xP1oAGMpEeeZNOmQc3Y8kg" name="getNom"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_3yXg4GMpEeeZNOmQc3Y8kg" name="AnimationBeaulieu">
+    <generalization xmi:type="uml:Generalization" xmi:id="_Ntuk8GMqEeeZNOmQc3Y8kg" general="_nCSEUGMoEeeZNOmQc3Y8kg"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="__EVSoGMpEeeZNOmQc3Y8kg" name="getnom"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_CJXJ4GMqEeeZNOmQc3Y8kg" name="BA">
+    <generalization xmi:type="uml:Generalization" xmi:id="_OqGGkGMqEeeZNOmQc3Y8kg" general="_nCSEUGMoEeeZNOmQc3Y8kg"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_EgvQ8GMqEeeZNOmQc3Y8kg" name="getNom"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_3GWS8GMqEeeZNOmQc3Y8kg" name="Oeuvre" visibility="protected">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_7BbocGMqEeeZNOmQc3Y8kg" name="titre"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_rnBTcGMrEeeZNOmQc3Y8kg" name="infos"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_tEjocGMrEeeZNOmQc3Y8kg" name="synopsis"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_unIOcGMrEeeZNOmQc3Y8kg" name="affichePetitFormat"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_wuF68GMrEeeZNOmQc3Y8kg" name="afficheMoyenFormat"/>
+    <nestedClassifier xmi:type="uml:DataType" xmi:id="_LVxZoGMrEeeZNOmQc3Y8kg" name=""/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_n54TUGMrEeeZNOmQc3Y8kg" name="contient" client="_CJXJ4GMqEeeZNOmQc3Y8kg" supplier="_3GWS8GMqEeeZNOmQc3Y8kg"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_47XeYGMrEeeZNOmQc3Y8kg" name="Biblio">
+    <elementImport xmi:type="uml:ElementImport" xmi:id="_-CfJMGMrEeeZNOmQc3Y8kg" alias="liste" importedElement="_nCSEUGMoEeeZNOmQc3Y8kg"/>
+    <elementImport xmi:type="uml:ElementImport" xmi:id="_ClYsoGMsEeeZNOmQc3Y8kg" alias="biblioPrincipale" importedElement="_u9xGcGMjEeeZNOmQc3Y8kg"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_6dmGIGMrEeeZNOmQc3Y8kg" name="nom"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_pArjIGV3EeeZNOmQc3Y8kg" name="EvtIHM(ref Vue)">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_pArjIWV3EeeZNOmQc3Y8kg" name="passihm" type="_QXDtMF3QEeeZjNIPd42fBQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_pArjImV3EeeZNOmQc3Y8kg" name="fiche" type="_ZbE5IF3VEeeZjNIPd42fBQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_5PWxMmV3EeeZNOmQc3Y8kg" name="bibliomanager" type="_u9xGcGMjEeeZNOmQc3Y8kg" association="_5PWKIGV3EeeZNOmQc3Y8kg"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="__4WecGV3EeeZNOmQc3Y8kg" name="playlistmanager" type="_WSwocGMnEeeZNOmQc3Y8kg" association="__4VQUGV3EeeZNOmQc3Y8kg"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjI2V3EeeZNOmQc3Y8kg" name="transfertCurrentVideoEntetePL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjJGV3EeeZNOmQc3Y8kg" name="ajouterVideoPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjJWV3EeeZNOmQc3Y8kg" name="initialiserVideosBibliIHM"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjJmV3EeeZNOmQc3Y8kg" name="selectFicheVideo"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjJ2V3EeeZNOmQc3Y8kg" name="playVideoPC"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjKGV3EeeZNOmQc3Y8kg" name="enregistrerVideoBiblioGenerale"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjKWV3EeeZNOmQc3Y8kg" name="playPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjKmV3EeeZNOmQc3Y8kg" name="inverserVideoPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjK2V3EeeZNOmQc3Y8kg" name="enregistrerPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjLGV3EeeZNOmQc3Y8kg" name="viderPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjLWV3EeeZNOmQc3Y8kg" name="supprimerVideoPL"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pArjLmV3EeeZNOmQc3Y8kg" name="chargerPL"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_5PWKIGV3EeeZNOmQc3Y8kg" memberEnd="_5PWxMmV3EeeZNOmQc3Y8kg _5PWxM2V3EeeZNOmQc3Y8kg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_5PWxMGV3EeeZNOmQc3Y8kg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_5PWxMWV3EeeZNOmQc3Y8kg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_5PWxM2V3EeeZNOmQc3Y8kg" name="copyof_evtihm_1" type="_pArjIGV3EeeZNOmQc3Y8kg" association="_5PWKIGV3EeeZNOmQc3Y8kg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="__4VQUGV3EeeZNOmQc3Y8kg" memberEnd="__4WecGV3EeeZNOmQc3Y8kg __4WecWV3EeeZNOmQc3Y8kg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="__4V3YGV3EeeZNOmQc3Y8kg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="__4V3YWV3EeeZNOmQc3Y8kg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="__4WecWV3EeeZNOmQc3Y8kg" name="evtihm(ref vue)" type="_pArjIGV3EeeZNOmQc3Y8kg" association="__4VQUGV3EeeZNOmQc3Y8kg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_qWgRIGV4EeeZNOmQc3Y8kg" name="Label"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_331IIGV4EeeZNOmQc3Y8kg" name="Entry"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_66iEIGV4EeeZNOmQc3Y8kg" name="Button"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_CRpboGV5EeeZNOmQc3Y8kg" name="PanedWindow"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_E_m2sGV5EeeZNOmQc3Y8kg" name="Radiobutton"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_IgNPoGV5EeeZNOmQc3Y8kg" name="Listbox"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1zT2MGV5EeeZNOmQc3Y8kg" name="Canvas"/>
+  <packagedElement xmi:type="uml:Realization" xmi:id="_OdrowGV7EeeZNOmQc3Y8kg" client="_t1pkEF3OEeeZjNIPd42fBQ" supplier="_qWgRIGV4EeeZNOmQc3Y8kg"/>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_glGwcHb7Eeet_IAWAg9t7g" name="Interaction1">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_4rhIEHcBEeet_IAWAg9t7g">
+      <body>deserialisation du fichier PL</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_0QaR4HcFEeet_IAWAg9t7g">
+      <body>ajout videos de la PL&#xD;
+à l'IHM</body>
+    </ownedComment>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_j8sscHb9Eeet_IAWAg9t7g" name="Utilisateur" coveredBy="_dNILMHb_Eeet_IAWAg9t7g"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_ebAwEHb-Eeet_IAWAg9t7g" name="Interface" coveredBy="_dNRVIHb_Eeet_IAWAg9t7g _U57JcHcAEeet_IAWAg9t7g _cXqGUXcAEeet_IAWAg9t7g _bHsd0XcBEeet_IAWAg9t7g _Ga_g4HlUEee3NayDuRRXVA _GbNjUHlUEee3NayDuRRXVA _ytUKcHlVEee3NayDuRRXVA"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_pUzHoHb_Eeet_IAWAg9t7g" name="EvtProxy" coveredBy="_2a3JgXcAEeet_IAWAg9t7g _bH2O0HcBEeet_IAWAg9t7g _p0GA0HcBEeet_IAWAg9t7g _KKEpoXcCEeet_IAWAg9t7g _hvKroXcCEeet_IAWAg9t7g _Hm33oXcDEeet_IAWAg9t7g _HirpQHcFEeet_IAWAg9t7g _HjuyIHcFEeet_IAWAg9t7g _dVp_oHcAEeet_IAWAg9t7g _dVgOoXcAEeet_IAWAg9t7g _uB654XcGEeet_IAWAg9t7g _qWZN4XcHEeet_IAWAg9t7g _qzv4QXcHEeet_IAWAg9t7g"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_MYW7kHcBEeet_IAWAg9t7g" name="PlayListManager" coveredBy="_p0GA0XcBEeet_IAWAg9t7g _qEMSUXcBEeet_IAWAg9t7g _qEMSUHcBEeet_IAWAg9t7g _KKEponcCEeet_IAWAg9t7g _Kb9D0ncCEeet_IAWAg9t7g _Kb9D0XcCEeet_IAWAg9t7g _Kcu1AHcEEeet_IAWAg9t7g"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_B2R8kHcEEeet_IAWAg9t7g" name="Modele/Playlist" coveredBy="_KcwqMHcEEeet_IAWAg9t7g"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_jBHe4HcGEeet_IAWAg9t7g" name="BiblioManager" coveredBy="_uB654ncGEeet_IAWAg9t7g _uRzI8ncGEeet_IAWAg9t7g _uRzI8XcGEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_GbNjUHlUEee3NayDuRRXVA" name="ActionExecSpecStart" covered="_ebAwEHb-Eeet_IAWAg9t7g" execution="_U57JcHcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_U57JcHcAEeet_IAWAg9t7g" name="ActionExecSpec" covered="_ebAwEHb-Eeet_IAWAg9t7g" finish="_ytUKcHlVEee3NayDuRRXVA" start="_GbNjUHlUEee3NayDuRRXVA"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_dNILMHb_Eeet_IAWAg9t7g" name="MessageSend" covered="_j8sscHb9Eeet_IAWAg9t7g" message="_dM1QQHb_Eeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_dNRVIHb_Eeet_IAWAg9t7g" name="MessageRecv" covered="_ebAwEHb-Eeet_IAWAg9t7g" message="_dM1QQHb_Eeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_qzv4QXcHEeet_IAWAg9t7g" name="ActionExecSpec0Start" covered="_pUzHoHb_Eeet_IAWAg9t7g" execution="_dVgOoXcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_dVgOoXcAEeet_IAWAg9t7g" name="ActionExecSpec0" covered="_pUzHoHb_Eeet_IAWAg9t7g" finish="_dVp_oHcAEeet_IAWAg9t7g" start="_qzv4QXcHEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_2a3JgncAEeet_IAWAg9t7g" name="MessageRecv0" message="_2a3JgHcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_bH2O0HcBEeet_IAWAg9t7g" name="MessageRecv1" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_bHsd0HcBEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_2uYicXcAEeet_IAWAg9t7g" name="ActionExecSpec1" finish="_2uYicncAEeet_IAWAg9t7g" start="_2a3JgncAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_bHsd0XcBEeet_IAWAg9t7g" name="MessageSend2" covered="_ebAwEHb-Eeet_IAWAg9t7g" message="_bHsd0HcBEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_2a3JgXcAEeet_IAWAg9t7g" name="MessageSend1" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_2a3JgHcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_2uYicncAEeet_IAWAg9t7g" name="ActionExecSpec1Finish" execution="_2uYicXcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_p0GA0HcBEeet_IAWAg9t7g" name="MessageSend3" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_pz8P0HcBEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_Kcu1AHcEEeet_IAWAg9t7g" name="MessageSend7" covered="_MYW7kHcBEeet_IAWAg9t7g" message="_KcsYwHcEEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_qEMSUHcBEeet_IAWAg9t7g" name="ActionExecSpec2" covered="_MYW7kHcBEeet_IAWAg9t7g" finish="_qEMSUXcBEeet_IAWAg9t7g" start="_p0GA0XcBEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_p0GA0XcBEeet_IAWAg9t7g" name="MessageRecv2" covered="_MYW7kHcBEeet_IAWAg9t7g" message="_pz8P0HcBEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_KcwqMHcEEeet_IAWAg9t7g" name="MessageRecv6" covered="_B2R8kHcEEeet_IAWAg9t7g" message="_KcsYwHcEEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_qEMSUXcBEeet_IAWAg9t7g" name="ActionExecSpec2Finish" covered="_MYW7kHcBEeet_IAWAg9t7g" execution="_qEMSUHcBEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_KKEpoXcCEeet_IAWAg9t7g" name="MessageSend4" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_KKEpoHcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_Kb9D0XcCEeet_IAWAg9t7g" name="ActionExecSpec3" covered="_MYW7kHcBEeet_IAWAg9t7g" finish="_Kb9D0ncCEeet_IAWAg9t7g" start="_KKEponcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_KKEponcCEeet_IAWAg9t7g" name="MessageRecv3" covered="_MYW7kHcBEeet_IAWAg9t7g" message="_KKEpoHcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_iFZaUXcCEeet_IAWAg9t7g" name="ActionExecSpec4" finish="_iFZaUncCEeet_IAWAg9t7g" start="_hvKroncCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_hvKroXcCEeet_IAWAg9t7g" name="MessageSend5" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_hvKroHcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_Kb9D0ncCEeet_IAWAg9t7g" name="ActionExecSpec3Finish" covered="_MYW7kHcBEeet_IAWAg9t7g" execution="_Kb9D0XcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_hvKroncCEeet_IAWAg9t7g" name="MessageRecv4" message="_hvKroHcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_iFZaUncCEeet_IAWAg9t7g" name="ActionExecSpec4Finish" execution="_iFZaUXcCEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_H4WCIXcDEeet_IAWAg9t7g" name="ActionExecSpec5" finish="_H4WCIncDEeet_IAWAg9t7g" start="_HnBooHcDEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_Hm33oXcDEeet_IAWAg9t7g" name="MessageSend6" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_Hm33oHcDEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_H4WCIncDEeet_IAWAg9t7g" name="ActionExecSpec5Finish" execution="_H4WCIXcDEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_HnBooHcDEeet_IAWAg9t7g" name="MessageRecv5" message="_Hm33oHcDEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="_HirpQHcFEeet_IAWAg9t7g" name="CombinedFragment" covered="_pUzHoHb_Eeet_IAWAg9t7g" interactionOperator="loop">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="_HjuyIHcFEeet_IAWAg9t7g" name="InteractionOperand" covered="_pUzHoHb_Eeet_IAWAg9t7g">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="_Hj38EHcFEeet_IAWAg9t7g">
+          <specification xmi:type="uml:LiteralString" xmi:id="_Hj38EXcFEeet_IAWAg9t7g" value="undefined"/>
+          <maxint xmi:type="uml:LiteralInteger" xmi:id="_Hj38E3cFEeet_IAWAg9t7g" value="1"/>
+          <minint xmi:type="uml:LiteralInteger" xmi:id="_Hj38EncFEeet_IAWAg9t7g"/>
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_uB654XcGEeet_IAWAg9t7g" name="MessageSend8" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_uB654HcGEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_uRzI8XcGEeet_IAWAg9t7g" name="ActionExecSpec6" covered="_jBHe4HcGEeet_IAWAg9t7g" finish="_uRzI8ncGEeet_IAWAg9t7g" start="_uB654ncGEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_uB654ncGEeet_IAWAg9t7g" name="MessageRecv7" covered="_jBHe4HcGEeet_IAWAg9t7g" message="_uB654HcGEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_uRzI8ncGEeet_IAWAg9t7g" name="ActionExecSpec6Finish" covered="_jBHe4HcGEeet_IAWAg9t7g" execution="_uRzI8XcGEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_qx9vkXcHEeet_IAWAg9t7g" name="ActionExecSpec7" finish="_qx9vkncHEeet_IAWAg9t7g" start="_qWZN4ncHEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_qWZN4XcHEeet_IAWAg9t7g" name="MessageSend9" covered="_pUzHoHb_Eeet_IAWAg9t7g" message="_qWZN4HcHEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_qWZN4ncHEeet_IAWAg9t7g" name="MessageRecv8" message="_qWZN4HcHEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_qx9vkncHEeet_IAWAg9t7g" name="ActionExecSpec7Finish" execution="_qx9vkXcHEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_dVp_oHcAEeet_IAWAg9t7g" name="ActionExecSpec0Finish" covered="_pUzHoHb_Eeet_IAWAg9t7g" execution="_dVgOoXcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_Ga_g4HlUEee3NayDuRRXVA" name="ActionExecSpecStart" covered="_ebAwEHb-Eeet_IAWAg9t7g" execution="_U57JcHcAEeet_IAWAg9t7g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_ytUKcHlVEee3NayDuRRXVA" name="MessageRecv" covered="_ebAwEHb-Eeet_IAWAg9t7g" message="_ytQgEHlVEee3NayDuRRXVA"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_cXqGUXcAEeet_IAWAg9t7g" name="MessageSend0" covered="_ebAwEHb-Eeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_dM1QQHb_Eeet_IAWAg9t7g" name="click bouton chargerPL" receiveEvent="_dNRVIHb_Eeet_IAWAg9t7g" sendEvent="_dNILMHb_Eeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_2a3JgHcAEeet_IAWAg9t7g" name="dialog.askopenfilename" receiveEvent="_2a3JgncAEeet_IAWAg9t7g" sendEvent="_2a3JgXcAEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_bHsd0HcBEeet_IAWAg9t7g" name="chargerPL" receiveEvent="_bH2O0HcBEeet_IAWAg9t7g" sendEvent="_bHsd0XcBEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_pz8P0HcBEeet_IAWAg9t7g" name="load" receiveEvent="_p0GA0XcBEeet_IAWAg9t7g" sendEvent="_p0GA0HcBEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_KKEpoHcCEeet_IAWAg9t7g" name="calculerNomIHMPL" receiveEvent="_KKEponcCEeet_IAWAg9t7g" sendEvent="_KKEpoXcCEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_hvKroHcCEeet_IAWAg9t7g" name="chargement champs IHM PL" receiveEvent="_hvKroncCEeet_IAWAg9t7g" sendEvent="_hvKroXcCEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_Hm33oHcDEeet_IAWAg9t7g" name="viderPL" receiveEvent="_HnBooHcDEeet_IAWAg9t7g" sendEvent="_Hm33oXcDEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_KcsYwHcEEeet_IAWAg9t7g" name="create" messageSort="createMessage" receiveEvent="_KcwqMHcEEeet_IAWAg9t7g" sendEvent="_Kcu1AHcEEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_uB654HcGEeet_IAWAg9t7g" name="rechercherVideo" receiveEvent="_uB654ncGEeet_IAWAg9t7g" sendEvent="_uB654XcGEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_qWZN4HcHEeet_IAWAg9t7g" name="_majAfficheOeuvreCinema" receiveEvent="_qWZN4ncHEeet_IAWAg9t7g" sendEvent="_qWZN4XcHEeet_IAWAg9t7g"/>
+    <message xmi:type="uml:Message" xmi:id="_ytQgEHlVEee3NayDuRRXVA" name="retour[PL chargee dans IHM]" messageSort="reply" receiveEvent="_ytUKcHlVEee3NayDuRRXVA"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_2l4VEGMoEeeZNOmQc3Y8kg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_2l6KQGMoEeeZNOmQc3Y8kg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>
