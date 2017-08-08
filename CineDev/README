@@ -40,8 +40,14 @@ python - librairies
 	 	python -m pip install progressbar2
 		python -m pip install beautifulsoup4
 		python -m pip install pillow ( pillow remplace PIL
+										source https://github.com/python-pillow/Pillow
 										info si probleme https://pillow.readthedocs.io/en/latest/installation.html) 
-		
+	si proxy
+		HTTP_PROXY=http://username:pass@proxyaddress:port
+		export HTTP_PROXY
+		HTTPS_PROXY=http://username:pass@proxyaddress:port
+		export HTTPS_PROXY
+			
 application CINETIX
 -------------------
 	Recuperer le fichier archive sur le depot github
