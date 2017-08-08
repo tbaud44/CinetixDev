@@ -33,23 +33,27 @@ python - librairies
 -------------------
 	Ajout de librairies complementaires à l'interpreteur python
 	ouvrir un terminal et taper ces commandes:
-	
-	python -m pip install progressbar2
-	python -m pip install beautifulsoup4
-	python -m pip install pillow
-
+	  (sous linux uniquement )
+		tkinter  $sudo dnf|yum install python3-tkinter
+	    pip      $python -m ensurepip --default-pip    (voir https://docs.python.org/fr/3.6/installing/index.html)
+	 
+	 	python -m pip install progressbar2
+		python -m pip install beautifulsoup4
+		python -m pip install pillow ( pillow remplace PIL
+										info si probleme https://pillow.readthedocs.io/en/latest/installation.html) 
+		
 application CINETIX
 -------------------
 	Recuperer le fichier archive sur le depot github
 	Exemple, premiere release au 05/08/2017(version 1.0.0-beta1)
-	https://github.com/tbaud44/beaulieuCine/archive/CineDev-1.0.0-beta1.zip
+	https://github.com/tbaud44/CinetixDev/archive/1.0.0-beta1.zip
 	Dezipper le fichier dans un repertoire
 	
 Execution
 ---------
 Modifier au besoin le fichier resources/config.ini en positionant le repertoire des videos avec la variable repertoireVideo
 Avec un terminal (cmd dos ou shell) :
- position chemin appli variable CINEPATH dans cinetix.bat ou cinetix.sh
+ position chemin appli variable CINEPATH dans cinetix.bat ou cinetix.sh ainsi que le chemin du bianire python
  executer cinetix.sh(bat) 
 
 
