@@ -146,7 +146,8 @@ class Player(Tk.Frame):
 
     def quitter(self):
         self.timer.stop()
-        self.timeslider.destroy() 
+        if not self.fullscreen:
+            self.timeslider.destroy() 
         self.player.stop()
         self.parent.destroy()     # stops mainloop
                    

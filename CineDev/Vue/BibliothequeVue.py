@@ -47,8 +47,8 @@ class Interface:
         etatLibelle = tk.StringVar()
         self.dicoWidget['SVetatLibelle']=etatLibelle
         largeurEtatLibelle = self._getDimension('etatLibelle.width')
-        labelL1C3 = tk.Label(self.root, textvariable=etatLibelle, width=largeurEtatLibelle, bg="#FEFEE2", font=('Helvetica', 13, 'bold'))
-        labelL1C3.grid(row=1, column=2, columnspan=3, padx=1, sticky=tk.W)
+        labelL1C2 = tk.Label(self.root, textvariable=etatLibelle, anchor=tk.NW, width=largeurEtatLibelle, bg="#FEFEE2", font=('Helvetica', 13, 'bold'))
+        labelL1C2.grid(row=1, column=2, columnspan=3, padx=1, sticky=tk.W)
         
         #L1C3 titre global
         #heureL1C6
@@ -56,8 +56,8 @@ class Interface:
         self.dicoWidget['SVheure']=strHeure
         largeurHeure = self._getDimension('heure.width')
         
-        labelL1C6 = tk.Label(self.root, textvariable=strHeure, width=largeurHeure, font=('courier', 11, 'bold'))
-        labelL1C6.grid(row=1, column=5, padx=1, sticky=tk.W)
+        labelL1C5 = tk.Label(self.root, textvariable=strHeure, width=largeurHeure, font=('courier', 11, 'bold'))
+        labelL1C5.grid(row=1, column=5, padx=1, sticky=tk.W)
         self.miseAJourHeure(strHeure)
         
         pwL2C1 = tk.PanedWindow(self.root, orient=tk.VERTICAL, bg="#FEFEE2") #regroupe la liste et le sidebar
@@ -209,15 +209,16 @@ class Interface:
         entryVideoPL.grid(in_=framePlL3C3, sticky=tk.W, row=3, column=1, columnspan=3)
         self.dicoWidget['entryVideoPL']=entryVideoPL
         
-        framePlL3C3.grid(row=3, column=3, padx=5, pady=5, sticky=tk.W)
+        framePlL3C3.grid(row=3, column=3, padx=5, pady=1, sticky=tk.W)
         self.photosIHM['photoCopier'] = tk.PhotoImage(file=Util.configValue('commun', 'copier'))        
         boutonTransfertL3C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=self.evtProxy.transfertCurrentVideoEntetePL)
         boutonTransfertL3C2.grid(row=3, column=2, sticky=tk.W)
 
         msgInfoLibelle = tk.StringVar()
+        largeurStatusPL = self._getDimension('statusPL.width')
         
-        labelStatusPlL4C3 = LabelPlus(self.root, textvariable=msgInfoLibelle, width=40, fg= "dark green" , bg="#DF6D14", font=('courier', 10, 'bold'))
-        labelStatusPlL4C3.grid(row=4, column=3, padx=5, sticky=tk.W)
+        labelStatusPlL4C3 = LabelPlus(self.root, textvariable=msgInfoLibelle, width=largeurStatusPL, fg= "dark green" , bg="#DF6D14", font=('courier', 10, 'bold'))
+        labelStatusPlL4C3.grid(row=4, column=3, padx=5, sticky=tk.NW)
         self.dicoWidget['statusPL']=labelStatusPlL4C3
         
         largeurListPL = self._getDimension('listPL.width')
@@ -238,11 +239,11 @@ class Interface:
         tempsEcouleVideo = tk.StringVar()
         labeltempsEcouleVideo = tk.Label(pwL8C3, textvariable=tempsEcouleVideo,  font=('courier', 9))
         tempsEcouleVideo.set("0 / 0 (min)")
-        labeltempsEcouleVideo.grid(in_=pwL8C3, row=1, column=1, padx=10, sticky=tk.W)
+        labeltempsEcouleVideo.grid(in_=pwL8C3, row=1, column=1, padx=10, sticky=tk.NW)
         
         largeurPbarVideo = self._getDimension('pbarVideo.width')
         pbarVideo = Pbar (master=pwL8C3, strValue=tempsEcouleVideo, orient="horizontal", length=largeurPbarVideo, mode="determinate")
-        pbarVideo.grid(in_=pwL8C3, row=2, column=1, padx=5, sticky=tk.NW)
+        pbarVideo.grid(in_=pwL8C3, row=2, column=1, padx=5, pady=1, sticky=tk.NW)
         self.dicoWidget['pbar']= pbarVideo
         
         pwL8C3.grid(row=8, column=3, padx=5, sticky=tk.NW)
@@ -261,6 +262,7 @@ class Interface:
         boutonPlayPlL9C3=tk.Button(self.root, image=self.photosIHM['photoPlay'], command=\
                 lambda x=listPlL5C3,y=pbarVideo,w=self.tbaL7C4:self.evtProxy.playPL(x, y, w))
         boutonPlayPlL9C3.grid(row=9, column=3, padx=5, pady=5)
+        self.dicoWidget['btnPlay']=boutonPlayPlL9C3
         
         largeurBtnStop = self._getDimension('btnStop.width')
         boutonStopPlL10C3=tk.Button(self.root, text="STOP", width=largeurBtnStop, command=self.evtProxy.stopperPL)

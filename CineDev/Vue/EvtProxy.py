@@ -178,11 +178,11 @@ class EvtIHM(object):
         methode qui arrete la lecture des playlists (brutalement via le bouton stop)
         '''
         try:
-            self.vlcPlayer.quitter()
+            self.__finLecturePL(self.vlcPlayer)
             self.bibliIHM.getId('pbar').stop() #on arrete la barre de progression
         except AttributeError:
             pass    
-    
+     
     def playPL(self, playlistIHM, pbarIHM, timerIHM):
     
         '''
@@ -202,7 +202,9 @@ class EvtIHM(object):
         geometry= Util.configValue('ECRAN2', 'geometry')
         
         self.vlcPlayer =  PlayerVLC2.Player(wdw, \
-                                       title='playlist beaulieu' , fullscreen=False, geometry=geometry, paramVLC=paramVLC )
+                                       title='playlist beaulieu' , fullscreen=True, geometry=geometry, paramVLC=paramVLC )
+        #on desactive le bouton play
+        self.bibliIHM.getId('btnPlay').config(state=tk.DISABLED)
         self.__itererPlayPL(playlistIHM, pbarIHM, timerIHM, -1, self.vlcPlayer)  
             
                        
@@ -419,8 +421,7 @@ class EvtIHM(object):
        # print ("rang {0}".format(rangPLAjouer))
         if (rangPLAjouer >= playlistIHM.size()):
             #c'est fini on tue le timer
-            vlcPlayer.quitter()
-            self._majStatusPL('finPL')
+            self.__finLecturePL(vlcPlayer)
             return #plus de videos a traiter dans la PL
         '''la video en cours est-elle finie ?'''
         
@@ -462,9 +463,19 @@ class EvtIHM(object):
             self.__itererPlayPL(playlistIHM, pbarIHM, None, rangPLAjouer, vlcPlayer) #None pour le timer pour ne plus faire le controle avec videoFinished
         else:
             #c'est fini on tue le timer et vlc
-            vlcPlayer.quitter()
-            self._majStatusPL('finPL')
+            self.__finLecturePL(vlcPlayer)
+            
+    def __finLecturePL(self, vlcPlayer):
     
+        '''
+        methode qui met fin a la lecture de la PL
+        '''
+        vlcPlayer.quitter()
+        self._majStatusPL('finPL')
+        #on reactive le bouton play
+        self.bibliIHM.getId('btnPlay').config(state=tk.NORMAL)
+        self.miseAJourEtat("etatFin")
+        
     def __calculerOeuvreFilmWeb(self):
     
         '''
