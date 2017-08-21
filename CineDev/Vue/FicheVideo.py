@@ -13,6 +13,7 @@ from Modele.AnimationBeaulieu import AnimationBeaulieu
 from Modele.BA import BA
 from Modele.PUB import PUB
 from Modele.Video import Video, Type
+from transverse.Util import Util
 import tkinter as tk
 
 
@@ -32,9 +33,11 @@ class Fiche(object):
         '''
         affiche la frame avec ses composants
         '''
-    def afficher(self, video : Video):
+    def afficher(self, video:Video):
         wdw = tk.Toplevel()
-        wdw.geometry("{}x{}+{}+{}".format(300, 390, 400, 300))
+        wdw.geometry(Util.configValue('dimensions', 'geometryFiche'))
+        
+       # wdw.geometry("{}x{}+{}+{}".format(300, 390, 400, 300))
         #wdw.geometry('+400+300')
         self.videoObj = video
         self.frame = wdw
