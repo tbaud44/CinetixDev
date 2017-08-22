@@ -158,7 +158,7 @@ class Interface:
         tk.Label(framePlL3C3,text='Date Diffusion\n(AAAAMMDD)').grid(in_=framePlL3C3, sticky=tk.NW, row=0, column=0)
         
         dateDiffu = tk.Entry(framePlL3C3)
-        dateDiffu.grid(in_=framePlL3C3, sticky=tk.W, row=0, column=1)
+        dateDiffu.grid(in_=framePlL3C3, sticky=tk.W, row=0, column=1, columnspan=2)
         self.dicoWidget['dateDiffu']=dateDiffu
         
         #ajout des radio bouton pout l'heure
@@ -199,7 +199,7 @@ class Interface:
         tk.Label(framePlL3C3, text='Duree').grid(in_=framePlL3C3, sticky=tk.NW, row=2, column=0)
         
         entryDureePL= tk.Entry(framePlL3C3, state='readonly')
-        entryDureePL.grid(in_=framePlL3C3, sticky=tk.W, row=2, column=1)
+        entryDureePL.grid(in_=framePlL3C3, sticky=tk.W, row=2, column=1, columnspan=2)
         self.dicoWidget['entryDureePL']=entryDureePL
         
         tk.Label(framePlL3C3, text='Film projection').grid(in_=framePlL3C3, sticky=tk.W, row=3, column=0)

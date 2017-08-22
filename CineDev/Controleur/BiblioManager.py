@@ -93,6 +93,10 @@ class BiblioManager(object):
         on calcule sa durée de lecture via un mini player VLC ainsi que la date du fichier.
         '''
         repVideos=Util.configValue('commun', 'repertoireVideo')
+        #test si repVideos est bien un repertoire lisible
+        if not os.path.isdir(repVideos):
+            raise CineException('repVideoKO')
+            return
         player =  PlayerVLCLight.Player() #player utilisé pour calcuker duree video
         #on stocke temporairement les videos du repertoire
         videosRepertoireTemp = {};
@@ -101,7 +105,7 @@ class BiblioManager(object):
                 #nouveau fichier video donc on ajoute on dico memoire
                 dureeVideo = player.GetDurationVideo(videoFile, repVideos)
                 mm, ss = divmod(dureeVideo, 60)
-                print ("duree:",mm,ss)
+                print ("video et duree:",videoFile, mm,ss)
                 
                 newVideo = Video(videoFile, dureeVideo)
                 try:
