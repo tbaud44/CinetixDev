@@ -18,6 +18,7 @@ Installation (Mode simplifié)
 Prerequis
 ---------
 	PC fonctionnant sous windows, linux ou MAC
+	VLC installé
 	connexion internet (pour l'installation de l'application uniquement)
 	Double ecran (Ecran1 pour le PC et Ecran2 pour la salle cinema au format HDMI) en mode salle de cinema (fonctionne aussi
 		avec un seul ecran en mode dev)
@@ -34,19 +35,12 @@ python - librairies
 	Ajout de librairies complementaires à l'interpreteur python
 	ouvrir un terminal et taper ces commandes:
 	  (sous linux uniquement )
-		tkinter  $sudo dnf|yum install python3-tkinter
-	    pip      $python -m ensurepip --default-pip    (voir https://docs.python.org/fr/3.6/installing/index.html)
+		tkinter  $sudo dnf|yum install python3-tkinter  (ou python3-tk)
 	 
-	 	python -m pip install progressbar2
-		python -m pip install beautifulsoup4
-		python -m pip install pillow ( pillow remplace PIL
-										source https://github.com/python-pillow/Pillow
-										info si probleme https://pillow.readthedocs.io/en/latest/installation.html) 
-	si proxy
-		HTTP_PROXY=http://username:pass@proxyaddress:port
-		export HTTP_PROXY
-		HTTPS_PROXY=http://username:pass@proxyaddress:port
-		export HTTPS_PROXY
+	 	(sous windows) python -m
+	 	(sous linux) pip3.5
+	 	
+	 	 lib à installer progressbar2, beautifulsoup4, Pillon, python-vlc
 			
 application CINETIX
 -------------------
