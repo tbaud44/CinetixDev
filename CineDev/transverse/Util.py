@@ -46,7 +46,12 @@ class Util:
         return urljoin('file:', pathname2url(path))
     path2url = staticmethod(path2url)
     
+   '''format secondes en  min/sec
+        ex 105 sec fait 1:45 min
+    '''
     def secToms(nb_sec):
+        if not nb_sec:
+            return "0:00"
         m,s=divmod(nb_sec,60)
         if s>=10:
             return "%d:%d" %(m,s)
@@ -54,10 +59,16 @@ class Util:
             return "%d:0%d" %(m,s)            
     secToms = staticmethod(secToms)
 
+    '''format minutes en  secondes
+        ex 4:10 fait 250 sec
+    '''
     def minTosec(nb_min):
+        if not nb_min:
+            return "0"
         liste = nb_min.split(':')
         return str(int(liste[0])*60 + int(liste[1]))    
     minTosec = staticmethod(minTosec)
+
 
     def heureCompare(heureReference, heure1, heure2):
         '''heure sont au format hh:mm'''
