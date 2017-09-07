@@ -6,7 +6,7 @@ Created on 17 mai 2017
 classe permettant la gestion de la bibliotheque video representees par des bande annonce, pub et animation Beaulieu
 gere la persistance des informations avec la couche modele
 '''
-from datetime import date
+from datetime import date, datetime
 import hashlib
 import os.path
 import pickle
@@ -18,7 +18,8 @@ from bs4 import BeautifulSoup
 
 from Modele.Biblio import Biblio
 from Modele.OeuvreCinematographique import Oeuvre
-from Modele.Video import Video
+from Modele.Video import Video, Type
+from Modele.BA import BA
 from Vue.widget import PlayerVLCLight
 from transverse.CinetixException import CineException, CineWarning
 from transverse.Util import Util
@@ -85,7 +86,20 @@ class BiblioManager(object):
         if nomTri == 'Date':
             return sorted(l, key=lambda t:t.dateFichier)
         
-         
+    def getColor(self, video:Video):
+        '''
+         methode qui retoune la couleur d'une video
+         par defaut renvoie le champ color
+         pour les pubs , regarder les datesDeb et datesFin
+         '''
+        if video.type.value == Type.PUB.value:
+            dateJour = datetime.now()
+            if video.dateDeb and dateJour < video.dateDeb:
+                return "yellow3" 
+            if video.dateFin and dateJour > video.dateFin:
+                return "yellow3" 
+        return video.color
+     
     def scanDisk(self):
         '''
         compare le repertoire de la bibliotheque avec l'objet memoire
@@ -115,7 +129,8 @@ class BiblioManager(object):
                     print ("Problem parsing date fichier " + videoFile)
                 last_modified_date = date.fromtimestamp(mtime)
                 newVideo.setDateFichier(last_modified_date)
-                videosRepertoireTemp[videoFile]=newVideo
+                #Par choix de jean marc, creation par defaut d'une B.A
+                videosRepertoireTemp[videoFile]=BA(newVideo)
             else:
                 #on recopie l'objet video existant
                 videosRepertoireTemp[videoFile]=self.biblioGenerale.videos[videoFile]    
@@ -158,11 +173,12 @@ class BiblioManager(object):
         mot_de_passe_admin_chiffre = Util.configValue('commun', 'passAdminCrypte')
         return (entreSaisi_chiffre == mot_de_passe_admin_chiffre)
         
-    def rechercherInfosWebVideo(self, jourDiffusion, heureParam):
+    def rechercherInfosWebVideo(self, jourDiffusion):
         '''recherche des infos sur le site web du cinema lebeaulieu.
         retourne une oeuvre cinema en tant qu'objet
         '''
-        dateFormatUrl=jourDiffusion[6:8]+'%2F'+jourDiffusion[4:6]+'%2F'+jourDiffusion[:4]
+        dateFormatUrl=jourDiffusion[:2]+'%2F'+jourDiffusion[2:4]+'%2F'+jourDiffusion[4:8]
+        heureDiffusion=jourDiffusion[8:10]+':00'
         url = 'https://www.cinemalebeaulieu.com/programme.php?searchMode=date&RechercherDate='+dateFormatUrl
         request = urllib.request.Request(url)
         try:
@@ -182,7 +198,7 @@ class BiblioManager(object):
                 heureSeance=seance.find(class_="showtime").getText() #Ex: 18h00
                 #comparaison de l'heure selectionnée dans ihm et heure affichee dans le site web
                 if heureSeance:
-                    if Util.heureCompare(heureParam, heureSeance, heurePlusProche)<0:
+                    if Util.heureCompare(heureDiffusion, heureSeance, heurePlusProche)<0:
                         articlePlusProcheHeureParam = filmProjete
                         heurePlusProche=heureSeance
         

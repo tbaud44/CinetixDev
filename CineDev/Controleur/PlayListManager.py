@@ -8,6 +8,7 @@ classe gerant les playlist au niveau de la couche modele
 import datetime
 import pickle
 import re
+import os.path
 
 from Controleur.BiblioManager import BiblioManager
 from Modele.PlayList import PlayList
@@ -31,35 +32,47 @@ class PlayListManager(object):
         'p1 playlist modele'
         #on verifie coherence de AAAAMMDD
         try:
-            aaaammjj=pl.date.strftime('%Y%m%d') #ex 20170321
-            heure=pl.heure.strftime('%Hh%M') #ex 15h00
+            aaaammjj=pl.date.strftime('%d%m%Y') #ex 31032017
+            heure=pl.heure.strftime('%H') #ex 15
         except ValueError:
             raise CineException("formatDateKO")    
         return (pl.film, aaaammjj, heure)
         
-    def __calculerNomPL(self, date, heure):
+    def __calculerNomPL(self, date):
         '''controle les champs du nom du PL'''
+        'Ex date = 1203201718 -> 12 mars 2017 18h00'
         'retourne un triple nom,date,heure  sous forme de chaine'
         
-        #on verifie d'abord qu'il y a bien 6 chiffres
-        if not re.match("[\d]{8}", date):
+        #on verifie d'abord qu'il y a bien 10 chiffres
+        if not re.match("[\d]{10}", date):
         #on verifie coherence de AAAAMMDD pour une date valide
             raise CineException("formatDateKO")
         try:
-            d=datetime.datetime.strptime(date, '%Y%m%d')
+            heure=date[-2:]+'h00'
+            d=datetime.datetime.strptime(date[:8], '%d%m%Y')
             h=datetime.datetime.strptime(heure, '%Hh%M') #ex 15h00
             
         except ValueError:
             raise CineException("formatDateKO")    
-        nomPL = "PL__" + d.strftime('%Y-%m-%d') +'__' + heure
+        nomPL = "PL__" + d.strftime('%d-%m-%Y') +'__' + heure
         return (nomPL,d,h)
+    
+    def existeFichierPL(self, date):
+        '''controle la presence du fichier PL
+        retourne true si le fichier exite deja'''
         
-    def enregistrerPL(self, date, heure, nomFilmProjete, listVideosNom):
+        (nomPL,d,h) = self.__calculerNomPL(date)
+        if os.path.isfile(Util.configValue('commun', 'repertoirePL') + nomPL + '.obj'):
+            return True
+        else:
+            return False
+            
+    def enregistrerPL(self, date, nomFilmProjete, listVideosNom):
         '''créer et enregistre une playlist avec toutes ses composantes
         sauvegarde la playlist sur disque
         retourne le nom de la PL
         '''
-        (nomPL,d,h) = self.__calculerNomPL(date, heure)
+        (nomPL,d,h) = self.__calculerNomPL(date)
         
         
         pl = PlayList(nomPL,d,h, nomFilmProjete)
@@ -106,17 +119,17 @@ class PlayListManager(object):
         recherche toutes les playlist du meme jour que la date parametre
         si recherche > 1 playlist, on choisit celle qui est le plus proche de l'heure
         retourne le nom du fichier de la playlist'''
-        aaaammjjParam=pdate.strftime('%Y%m%d') #ex 20170321
+        jjmmaaaaParam=pdate.strftime('%d%m%Y') #ex 20170321
         heureParam=pdate.strftime('%Hh%M') #ex 15h00
         PLcriteresOK = [] #tableau des playlists qui ont le jour ok par rapport au parametre
                     #on stocke l'heure du fichier
         ficPL = Util.listerRepertoire(Util.configValue('commun', 'repertoirePL'), False)
         for fichier in ficPL:
-            retour = re.match(r"PL__([\d]{4})-([\d]{2})-([\d]{2})__([\d]{2})h00.obj", fichier)          
+            retour = re.match(r"PL__([\d]{2})-([\d]{2})-([\d]{4})__([\d]{2})h00.obj", fichier)          
             if retour:    
-                aaaammjjFichier=retour.group(1)+retour.group(2)+retour.group(3) #ex 20170321
+                jjmmaaaaFichier=retour.group(1)+retour.group(2)+retour.group(3) #ex 21032017
                 heureFichier=retour.group(4)+'h00' #ex 15h00
-                if aaaammjjFichier==aaaammjjParam:
+                if jjmmaaaaFichier==jjmmaaaaParam:
                     PLcriteresOK.append(retour.group()+':'+heureFichier)
         if len(PLcriteresOK)==0:
             raise CineException('PLRechercheKO')            

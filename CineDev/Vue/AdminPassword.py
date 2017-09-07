@@ -72,5 +72,7 @@ class PassIHM(object):
             self.bibliVue.afficherFrameAdmin()
             #active le menu fiche video
             self.bibliVue.aMenu.entryconfig(0, state=tk.NORMAL)
+            #activer le bouton enregistrer
+            self.bibliVue.dicoWidget['btnEnreg'].config(state=tk.NORMAL)
         else:
             raise CineException('AuthentificationKO')    

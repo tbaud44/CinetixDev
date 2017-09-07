@@ -20,7 +20,10 @@ class PUB(Video):
         self.dateFichier = mere.dateFichier
         self.type = Type.PUB
         self.contact = ""
+        self.montantCotis = 0.0
         self.color="yellow"
+        self.dateDeb = None
+        self.dateFin = None
         
     def setContact(self, nomContact):
         self.contact = nomContact

@@ -83,23 +83,25 @@ class EvtIHM(object):
         self.__setChampDisabledValue('entryVideoPL', curNomVideo) #copie du nom video dans le champ de la PL
         
     
-    def ajouterVideoPL(self, plIHM):
+    def ajouterVideoPL(self, evt):
     
         '''
         methode qui prend la selection video de la liste IHM et l'ajoute en fin de playlist de l'IHM
-        p1, widget playlist 
         '''
         
     # get the line's text
         listWidget = self.bibliIHM.getId('listVideos')  
-        
+        plIHM = self.bibliIHM.getId('listPlL5C3')
         selVideoIHM = self._getCurrentVideoBibli()
+        selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+        #controler que la video selectionnee n'est pas une pub inactive (couleur yellow3)
+        if self.bm.getColor(selVideoObj)=='yellow3':
+            raise CineException('PubOutOfDate')
         index = listWidget.curselection()[0]
         bgVideo = listWidget.itemcget(index, "bg") #permet de recopier l'attribut couleur sur la PL
         plIHM.insert(tk.END, selVideoIHM)
         plIHM.itemconfig(tk.END, bg=bgVideo)
         #mettre a jour la duree PL
-        selVideoObj = self.bm.rechercherVideo(selVideoIHM)
         duree = self.bibliIHM.getId('entryDureePL').get() #la duree de la PL est la somme  des durees des videos
         dureeEnSecondes = int(Util.minTosec(duree))
         dureeEnSecondes += selVideoObj.duree
@@ -119,7 +121,7 @@ class EvtIHM(object):
         listWidget.delete(0, tk.END)
         for video in self.bm.getAllVideosTriees(nomTri):
             listWidget.insert(tk.END, video.getNom())
-            listWidget.itemconfig(tk.END, bg=video.color) #couleur specifique selon BA, AnimBeaulieu ou PUB
+            listWidget.itemconfig(tk.END, bg=self.bm.getColor(video)) #couleur specifique selon BA, AnimBeaulieu ou PUB
              
     def afficheFrameFicheVideo(self, tk):
         '''
@@ -207,6 +209,22 @@ class EvtIHM(object):
         self.bibliIHM.getId('btnPlay').config(state=tk.DISABLED)
         self.__itererPlayPL(playlistIHM, pbarIHM, timerIHM, -1, self.vlcPlayer)  
             
+    
+    '''methode appelee lors d'un clic de checkbox sur la duree
+       inverse la valeur avec le min/max 
+    '''
+    def attenteCb(self):
+        entry=self.bibliIHM.getId('entryAdminDureeAttente')
+        entry.delete(0, tk.END) #efface ancienne valeur
+        if self.bibliIHM.getId('varCheckAttente').get()==1:
+            minDelaiAttente = Util.configValue('commun', 'dureeAttenteLecturePLMin')
+            #on ecrit la valeur dans le champ input
+            entry.insert(0, minDelaiAttente)
+        else:
+            maxDelaiAttente = Util.configValue('commun', 'dureeAttenteLecturePLMax')
+            #on ecrit la valeur dans le champ input
+            entry.insert(0, maxDelaiAttente)
+        self.miseAJourTimerBA(self.bibliIHM.getId('tbaL7C4'), entry)
                        
     def inverserVideoPL(self, playlistIHM, sens='PREC'):
     
@@ -254,7 +272,13 @@ class EvtIHM(object):
         p1, dico des widgets
         '''
        
-        nomPL = self.pm.enregistrerPL(bibliIHM.getId('dateDiffu').get(), bibliIHM.getId('heureDiffu').get(), \
+       #test si PL existeDeja
+        if self.pm.existeFichierPL(bibliIHM.getId('dateDiffu').get()):
+           if not messagebox.askyesno(Util.configValue('messages', 'PLDejaPresenteTitre'), 
+                                      Util.configValue('messages', 'PLDejaPresenteMsg')):
+               return
+        #PL nouvelle ou confirmation ecrasement   
+        nomPL = self.pm.enregistrerPL(bibliIHM.getId('dateDiffu').get(), \
             bibliIHM.getId('entryVideoPL').get(),bibliIHM.getId('listPlL5C3').get(0, tk.END))
         self._majStatusPL('enregPlOK', nomPL)
         #rechercher une video de la BA si la zone est renseignee
@@ -340,8 +364,6 @@ class EvtIHM(object):
             entryDate=self.bibliIHM.getId('dateDiffu')
             entryDate.delete(0, tk.END)
             entryDate.insert(0,date)
-            heureRBVar=self.bibliIHM.getId('heureDiffu')
-            heureRBVar.set(heure)
             entryVideoPL = self.bibliIHM.getId('entryVideoPL')
             self.__setChampDisabledValue('entryVideoPL', nomFilm)
             playlistIHM = self.bibliIHM.getId('listPlL5C3')
@@ -350,7 +372,7 @@ class EvtIHM(object):
             dureePL=0
             for video in plAChargee.videos:
                 playlistIHM.insert(tk.END, video.getNom())
-                playlistIHM.itemconfig(tk.END, bg=video.color)
+                playlistIHM.itemconfig(tk.END, bg=self.bm.getColor(video))
                 dureePL+=video.duree
             
             self.__setChampDisabledValue('entryDureePL', Util.secToms(dureePL))
@@ -485,8 +507,7 @@ class EvtIHM(object):
         '''
         oeuvre=None
         try:
-            oeuvre = self.bm.rechercherInfosWebVideo(self.bibliIHM.getId('dateDiffu').get(), 
-                            self.bibliIHM.getId('heureDiffu').get())
+            oeuvre = self.bm.rechercherInfosWebVideo(self.bibliIHM.getId('dateDiffu').get())
         except CineWarning:
             self._majStatusPL('parsingHtmlKO')
         if oeuvre:

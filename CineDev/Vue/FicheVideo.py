@@ -8,13 +8,14 @@ Frame permettant de saisir une fiche d'une ba,pub
 from tkinter import Canvas
 
 from PIL import Image, ImageTk
-
+from transverse.CinetixException import CineException
 from Modele.AnimationBeaulieu import AnimationBeaulieu
 from Modele.BA import BA
 from Modele.PUB import PUB
 from Modele.Video import Video, Type
 from transverse.Util import Util
 import tkinter as tk
+import datetime
 
 
 class Fiche(object):
@@ -57,16 +58,16 @@ class Fiche(object):
         for enfantWidget in master.grid_slaves() + master.pack_slaves() + master.place_slaves():
            enfantWidget.destroy()
         """construit les widgets """
-        frameFiche = tk.LabelFrame(master, width=15, height=55, text='Detail Video ')
+        frameFiche = tk.LabelFrame(master, width=18, height=55, text='Detail Video ')
 
         
         tk.Label(frameFiche, width = 15,text='Fichier Video').grid(in_=frameFiche, sticky=tk.W, row=1, column=1)
-        entryFichier= tk.Entry(frameFiche, width = 35)
-        entryFichier.grid(in_=frameFiche, sticky=tk.W, row=1, column=2)
+        self.entryFichier= tk.Entry(frameFiche, width = 30)
+        self.entryFichier.grid(in_=frameFiche, sticky=tk.W, row=1, column=2)
     
         '''affectation donnee '''
-        entryFichier.insert(0, video.nomFichier)
-        entryFichier.config(state=tk.DISABLED)
+        self.entryFichier.insert(0, video.nomFichier)
+        self.entryFichier.config(state=tk.DISABLED)
         
         tk.Label(frameFiche, width=15, text='Titre').grid(in_=frameFiche, sticky=tk.W, row=2, column=1)
         self.entryTitre= tk.Entry(frameFiche, width = 25)
@@ -137,23 +138,41 @@ class Fiche(object):
             self.entryContact.grid(in_=frameFiche, sticky=tk.W, row=7, column=2)
             '''affectation donnee '''
             self.entryContact.insert(0, video.contact)
-        '''pas de champ specifique pour Anim beaulieu'''
             
-        entryFichier.focus_set()
+            tk.Label(frameFiche, width=15, text='Montant Cotis').grid(in_=frameFiche, sticky=tk.W, row=8, column=1)
+            self.entryMontant= tk.Entry(frameFiche, width = 10)
+            self.entryMontant.grid(in_=frameFiche, sticky=tk.W, row=8, column=2)
+            '''affectation donnee '''
+            self.entryMontant.insert(0, video.montantCotis)
         
+            tk.Label(frameFiche, width=15, text='Date Debut').grid(in_=frameFiche, sticky=tk.W, row=9, column=1)
+            self.entryDateDeb= tk.Entry(frameFiche, width = 15)
+            self.entryDateDeb.grid(in_=frameFiche, sticky=tk.W, row=9, column=2)
+            '''affectation donnee si non null'''
+            if video.dateDeb:
+                self.entryDateDeb.insert(0, video.dateDeb.strftime('%d/%m/%Y'))
+        
+            tk.Label(frameFiche, width=15, text='Date Fin').grid(in_=frameFiche, sticky=tk.W, row=10, column=1)
+            self.entryDateFin= tk.Entry(frameFiche, width = 15)
+            self.entryDateFin.grid(in_=frameFiche, sticky=tk.W, row=10, column=2)
+            '''affectation donnee '''
+            if video.dateFin:
+                self.entryDateFin.insert(0, video.dateFin.strftime('%d/%m/%Y'))
+        
+        '''pas de champ specifique pour Anim beaulieu'''
+         
         '''ajout des 2 boutons'''
-        boutonAnnuler=tk.Button(frameFiche, width=10, text="Annuler", command=master.destroy)\
-            .grid(in_=frameFiche, sticky=tk.W, padx=5, pady=5, row=8, column=1)
-
-        boutonEnregistrer=tk.Button(frameFiche, width=10, text="Enregistrer", command=self.__enregistrerFicheVideo)\
-            .grid(in_=frameFiche, sticky=tk.W, padx=5, pady=5, row=8, column=2)
-
+        boutonAnnuler=tk.Button(master, width=10, text="Annuler", command=master.destroy)
+           
+        boutonEnregistrer=tk.Button(master, width=10, text="Enregistrer", command=self.__enregistrerFicheVideo)
+          #  .grid(in_=frameFiche, sticky=tk.W, padx=5, pady=5, row=8, column=2)
+        
         frameFiche.pack(padx=15, pady=15)
+        boutonAnnuler.pack(side=tk.LEFT, padx=15)
+        boutonEnregistrer.pack(side=tk.RIGHT, padx=15)
         
     def __rbChecked(self):
         '''methode appelle lors d'un click sur radio button fiche'''
-        
-        print ("variable is", self.varTypeVideo.get())
         
         if (self.varTypeVideo.get() == Type.INCONNU.value):
             '''on reinitialise la frame'''
@@ -189,7 +208,14 @@ class Fiche(object):
         
         if (self.varTypeVideo.get() == Type.PUB.value):
             self.videoObj.contact = self.entryContact.get()
-        
+            self.videoObj.montantCotis = float(self.entryMontant.get())
+            try:
+                if self.entryDateDeb.get():
+                    self.videoObj.dateDeb=datetime.datetime.strptime(self.entryDateDeb.get(), '%d/%m/%Y')
+                if self.entryDateFin.get():
+                    self.videoObj.dateFin=datetime.datetime.strptime(self.entryDateFin.get(), '%d/%m/%Y')
+            except ValueError:
+                raise CineException("formatDateKO")        
         self.frame.destroy()
         
         '''on enregistre la video'''

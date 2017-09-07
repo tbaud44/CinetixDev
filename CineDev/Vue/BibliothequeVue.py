@@ -120,7 +120,6 @@ class Interface:
         self.creerMenuContextuel(listVideos)
         # attach popup to frame
         listVideos.bind("<Button-3>", self.popup)
-
         '''enregistrement widget bibliIHM dans evtProxy'''
         self.evtProxy.setBibliIHM(self)
         
@@ -155,46 +154,14 @@ class Interface:
         framePlL3C3 = tk.LabelFrame(self.root, text='Definition Playlist')
 
         
-        tk.Label(framePlL3C3,text='Date Diffusion\n(AAAAMMDD)').grid(in_=framePlL3C3, sticky=tk.NW, row=0, column=0)
+        tk.Label(framePlL3C3,text='Date Diffusion\n(JJMMAAAAHH)').grid(in_=framePlL3C3, sticky=tk.NW, row=0, column=0)
         
         dateDiffu = tk.Entry(framePlL3C3)
         dateDiffu.grid(in_=framePlL3C3, sticky=tk.W, row=0, column=1, columnspan=2)
         self.dicoWidget['dateDiffu']=dateDiffu
         
-        #ajout des radio bouton pout l'heure
+        #ajout des radio bouton pout l'heure varHeureDiffu
         
-        varHeureDiffu = tk.StringVar()
-        varHeureDiffu.set("20h00")
-        self.dicoWidget['heureDiffu']=varHeureDiffu
-        
-        rad11h = tk.Radiobutton(
-            framePlL3C3, text="11h00",
-            variable=varHeureDiffu,
-            value= "11h00")
-            
-        rad11h.grid(in_=framePlL3C3, sticky=tk.W, row=1, column=0)
-        
-        rad15h = tk.Radiobutton(
-            framePlL3C3, text="15h00",
-            variable=varHeureDiffu,
-            value= "15h00")
-            
-        rad15h.grid(in_=framePlL3C3, sticky=tk.W, row=1, column=1)
-        
-        rad18h00 = tk.Radiobutton(
-            framePlL3C3, text="18h00",
-            variable=varHeureDiffu,
-            value= "18h00")
-            
-        rad18h00.grid(in_=framePlL3C3, sticky=tk.W, row=1, column=2)
-        
-        rad20h00 = tk.Radiobutton(
-            framePlL3C3, text="20h00",
-            variable=varHeureDiffu,
-            value= "20h00")
-            
-        rad20h00.grid(in_=framePlL3C3, sticky=tk.W, row=1, column=3)
-       
         #duree PL=somme des dur�es des videos de la PL       
         tk.Label(framePlL3C3, text='Duree').grid(in_=framePlL3C3, sticky=tk.NW, row=2, column=0)
         
@@ -228,8 +195,9 @@ class Interface:
         listPlL5C3.grid(row=5, column=3, padx=5, rowspan=3, sticky=tk.NW)
         self.dicoWidget['listPlL5C3']=listPlL5C3
         
-        boutonTransfertL5C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=
-                                      lambda x=listPlL5C3:self.evtProxy.ajouterVideoPL(x))
+        boutonTransfertL5C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=self.evtProxy.ajouterVideoPL)
+        #double click transfert vers la playlist de la video
+        listVideos.bind("<Double-Button-1>",self.evtProxy.ajouterVideoPL)
                                     
         boutonTransfertL5C2.grid(row=5, column=2, rowspan=3)
 
@@ -248,19 +216,20 @@ class Interface:
         
         pwL8C3.grid(row=8, column=3, padx=5, sticky=tk.NW)
      
-        dureeAttente = Util.configValue('commun', 'dureeAttenteLecturePL')
+        dureeAttente = Util.configValue('commun', 'dureeAttenteLecturePLMax')
         #necessite de mettre variable tbaL7c4 a cause methode afficherFrameAdmin
         largeurTimerBA = self._getDimension('timerBA.width')
         hauteurTimerBA = self._getDimension('timerBA.height')
         
-        self.tbaL7C4 = TimerBA(self.root, duree=dureeAttente, bg="#FEFEE2", height=hauteurTimerBA, width=largeurTimerBA, highlightbackground="#FEFEE2")
-        self.tbaL7C4.grid(row=7, column=4, sticky=tk.N)
+        tbaL7C4 = TimerBA(self.root, duree=dureeAttente, bg="#FEFEE2", height=hauteurTimerBA, width=largeurTimerBA, highlightbackground="#FEFEE2")
+        self.dicoWidget['tbaL7C4']=tbaL7C4
+        tbaL7C4.grid(row=7, column=4, sticky=tk.N)
         
-        self.tbaL7C4.afficherChrono(False)
+        tbaL7C4.afficherChrono(False)
         
         self.photosIHM['photoPlay'] = tk.PhotoImage(file=Util.configValue('commun', 'imgPlay'))        
         boutonPlayPlL9C3=tk.Button(self.root, image=self.photosIHM['photoPlay'], command=\
-                lambda x=listPlL5C3,y=pbarVideo,w=self.tbaL7C4:self.evtProxy.playPL(x, y, w))
+                lambda x=listPlL5C3,y=pbarVideo,w=tbaL7C4:self.evtProxy.playPL(x, y, w))
         boutonPlayPlL9C3.grid(row=9, column=3, padx=5, pady=5)
         self.dicoWidget['btnPlay']=boutonPlayPlL9C3
         
@@ -271,9 +240,10 @@ class Interface:
         pwL3C4 = tk.PanedWindow(self.root, orient=tk.VERTICAL) #regroupe la liste et le sidebar
         
         largeurBtnEnregistrer = self._getDimension('btnEnregistrer.width')
-        boutonEnregistrer=tk.Button(pwL3C4, width=largeurBtnEnregistrer, text="Enregistrer", command=\
+        boutonEnregistrer=tk.Button(pwL3C4, width=largeurBtnEnregistrer, state='disabled', text="Enregistrer", command=\
                 lambda x=self:self.evtProxy.enregistrerPL(x))
         boutonEnregistrer.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=1, column=1, columnspan=3)
+        self.dicoWidget['btnEnreg']=boutonEnregistrer
         
         largeurBtnCharger = self._getDimension('btnCharger.width')
         boutonCharger=tk.Button(pwL3C4, width=largeurBtnCharger, text="Charger", command=self.evtProxy.chargerPL)   
@@ -367,13 +337,24 @@ class Interface:
         '''methode qui affiche le frameLabel prope au profil administrateur (si mot de passe saisi correct)'''
         frameAdminL8C4 = tk.LabelFrame(self.root, relief='raised', borderwidth=4, bg='salmon', text='Administration', padx=5, pady=5)
 
-        tk.Label(self.root, bg='salmon', text='Delai lanc 20s>1sec').grid(in_=frameAdminL8C4, sticky=tk.W, row=0, column=0)
-        entryAdminDureeAttente = tk.Entry(self.root,width=3)
-        entryAdminDureeAttente.grid(in_=frameAdminL8C4, sticky=tk.W, row=0, column=1)
+        tk.Label(self.root, bg='salmon', text='Delai lanc\n20s>1sec').grid(in_=frameAdminL8C4, sticky=tk.W, row=0, column=0)
+        
+        varCheckAttente = tk.IntVar()
+        tk.Checkbutton(
+            frameAdminL8C4, text="",
+            bg='salmon',
+            highlightbackground='salmon',
+            variable=varCheckAttente,
+            command=self.evtProxy.attenteCb).grid(in_=frameAdminL8C4, sticky=tk.W, row=0, column=1)
         #Si changement par Admin alors redessiner le camembert en chgt echelle temps/duree
-        entryAdminDureeAttente.bind("<FocusOut>", lambda x:self.evtProxy.miseAJourTimerBA(self.tbaL7C4, entryAdminDureeAttente))
+        entryAdminDureeAttente = tk.Entry(frameAdminL8C4,width=3)
+        entryAdminDureeAttente.insert(0, Util.configValue('commun', 'dureeAttenteLecturePL'))
+        entryAdminDureeAttente.grid(in_=frameAdminL8C4, sticky=tk.W, row=0, column=2)
+        self.dicoWidget['entryAdminDureeAttente']=entryAdminDureeAttente
+        self.dicoWidget['varCheckAttente']=varCheckAttente
+        entryAdminDureeAttente.bind("<FocusOut>", lambda x:self.evtProxy.miseAJourTimerBA(self.dicoWidget['tbaL7C4'], entryAdminDureeAttente))
         frameAdminL8C4.grid(row=8, column=4, rowspan=2, sticky=tk.NW)
-    
+        
     def quitter(self):
         '''methode de fin de l application'''
         '''sauvegarde sur disque'''

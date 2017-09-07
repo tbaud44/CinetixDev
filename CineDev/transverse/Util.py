@@ -46,9 +46,9 @@ class Util:
         return urljoin('file:', pathname2url(path))
     path2url = staticmethod(path2url)
     
-   '''format secondes en  min/sec
+    """format secondes en  min/sec
         ex 105 sec fait 1:45 min
-    '''
+    """
     def secToms(nb_sec):
         if not nb_sec:
             return "0:00"
