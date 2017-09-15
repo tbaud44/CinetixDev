@@ -27,5 +27,4 @@ class BA(Video):
     def setOeuvreCinema(self, oeuvreCinema):
         self.oeuvreCinema = oeuvreCinema
         
-    def getNom(self):
-        return "BA - " + super(BA, self).getNom()        
+   

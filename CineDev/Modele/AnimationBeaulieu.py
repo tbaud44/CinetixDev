@@ -19,6 +19,4 @@ class AnimationBeaulieu(Video):
         self.dateFichier = mere.dateFichier
         self.type = Type.ANIM_BEAULIEU
         self.color="aquamarine"
-       
-    def getNom(self):
-        return "ANIM BEAU - " + super(AnimationBeaulieu, self).getNom()        
+         

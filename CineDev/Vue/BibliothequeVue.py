@@ -195,7 +195,8 @@ class Interface:
         listPlL5C3.grid(row=5, column=3, padx=5, rowspan=3, sticky=tk.NW)
         self.dicoWidget['listPlL5C3']=listPlL5C3
         
-        boutonTransfertL5C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=self.evtProxy.ajouterVideoPL)
+        boutonTransfertL5C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=\
+                lambda x=None:self.evtProxy.ajouterVideoPL(x))
         #double click transfert vers la playlist de la video
         listVideos.bind("<Double-Button-1>",self.evtProxy.ajouterVideoPL)
                                     

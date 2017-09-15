@@ -78,13 +78,18 @@ class Player(Tk.Frame):
         Tk.Frame.__init__(self, parent)
     
         if not parent: 
-            wdw = Tk.Toplevel()
+            wdw = Tk.Toplevel(bg="black")
             self.parent = wdw
         else:
             self.parent = parent    
-        if fullscreen:
-            self.parent.attributes('-fullscreen', 1)
+        if geometry:
             self.parent.geometry(geometry)
+            #self.parent.update()
+        if fullscreen:
+            #self.parent.attributes('-fullscreen', 2) #fonctionne bien que sous linux
+            #self.parent.wm_state(newstate="zoomed") #test ne fonctionne que sous windows et pas bien
+            #self.parent.overrideredirect(True) # que sous windows. supprime decoration fenetre
+            i=1
         #wdw.geometry('+400+400')
         self.debug = False
         self.fullscreen = fullscreen
@@ -94,7 +99,8 @@ class Player(Tk.Frame):
 
         if title == None:
             title = "tk_vlc"
-        self.parent.title(title)
+        if not fullscreen:    
+            self.parent.title(title)
 
         # The second panel holds controls
         self.player = None
@@ -142,7 +148,7 @@ class Player(Tk.Frame):
         self.parent.update()
 
         self.__setWindowId()
-        #self.player.set_hwnd(self.GetHandle()) # for windows, OnOpen does does this
+        self.player.set_hwnd(self.GetHandle()) # for windows, OnOpen does does this
 
     def quitter(self):
         self.timer.stop()

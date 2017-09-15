@@ -28,5 +28,3 @@ class PUB(Video):
     def setContact(self, nomContact):
         self.contact = nomContact
         
-    def getNom(self):
-        return "PUB - " + super(PUB, self).getNom()        
