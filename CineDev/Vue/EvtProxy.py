@@ -198,7 +198,7 @@ class EvtIHM(object):
         dureeAttente = Util.configValue('commun', 'dureeAttenteLecturePL')
         timerIHM.reinitialiser(duree=dureeAttente)
         timerIHM.afficherChrono(True) #attente bloquante
-        wdw = tk.Toplevel(bg="black")
+        wdw = tk.Toplevel()
         #recherche des parametres externalises
         paramVLC = Util.configValue('ECRAN2', 'paramVLC')
         geometry= Util.configValue('ECRAN2', 'geometry')

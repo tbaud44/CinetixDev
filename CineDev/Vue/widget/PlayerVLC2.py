@@ -78,7 +78,7 @@ class Player(Tk.Frame):
         Tk.Frame.__init__(self, parent)
     
         if not parent: 
-            wdw = Tk.Toplevel(bg="black")
+            wdw = Tk.Toplevel()
             self.parent = wdw
         else:
             self.parent = parent    
@@ -105,7 +105,7 @@ class Player(Tk.Frame):
         # The second panel holds controls
         self.player = None
         self.videopanel = ttk.Frame(self.parent)
-        self.canvas = Tk.Canvas(self.videopanel).pack(fill=Tk.BOTH,expand=1)
+        self.canvas = Tk.Canvas(self.videopanel,bg="black").pack(fill=Tk.BOTH,expand=1)
         self.videopanel.pack(fill=Tk.BOTH,expand=1)
         
         #en mode plein ecran, aucun bouton de commande
