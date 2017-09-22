@@ -13,7 +13,7 @@ import pickle
 from urllib.error import HTTPError
 from urllib.request import urlretrieve
 import urllib.request
-
+import re
 from bs4 import BeautifulSoup
 
 from Modele.Biblio import Biblio
@@ -175,6 +175,7 @@ class BiblioManager(object):
         
     def rechercherInfosWebVideo(self, jourDiffusion):
         '''recherche des infos sur le site web du cinema lebeaulieu.
+        jourDiffusion='1402201720
         retourne une oeuvre cinema en tant qu'objet
         '''
         dateFormatUrl=jourDiffusion[:2]+'%2F'+jourDiffusion[2:4]+'%2F'+jourDiffusion[4:8]
@@ -196,11 +197,15 @@ class BiblioManager(object):
             seance=filmProjete.find(class_="seance")
             if seance:    
                 heureSeance=seance.find(class_="showtime").getText() #Ex: 18h00
+                # peut avoir 18h00 VO donc supprimer le VO
+                heureSeanceFormattee = re.match(r"([\d]{2}):([\d]{2}).*", heureSeance)          
+            
                 #comparaison de l'heure selectionnée dans ihm et heure affichee dans le site web
-                if heureSeance:
-                    if Util.heureCompare(heureDiffusion, heureSeance, heurePlusProche)<0:
+                if heureSeanceFormattee:
+                    heureSeanceFormatteeParsee = heureSeanceFormattee.group(1)+':'+heureSeanceFormattee.group(2)
+                    if Util.heureCompare(heureDiffusion, heureSeanceFormatteeParsee, heurePlusProche)<0:
                         articlePlusProcheHeureParam = filmProjete
-                        heurePlusProche=heureSeance
+                        heurePlusProche=heureSeanceFormatteeParsee
         
         if articlePlusProcheHeureParam == None:
            '''probleme aucun film trouve sur le site'''

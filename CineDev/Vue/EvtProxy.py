@@ -363,7 +363,7 @@ class EvtIHM(object):
             (nomFilm, date, heure) = self.pm.calculerNomIHMPL(plAChargee)
             entryDate=self.bibliIHM.getId('dateDiffu')
             entryDate.delete(0, tk.END)
-            entryDate.insert(0,date)
+            entryDate.insert(0,date+heure)
             entryVideoPL = self.bibliIHM.getId('entryVideoPL')
             self.__setChampDisabledValue('entryVideoPL', nomFilm)
             playlistIHM = self.bibliIHM.getId('listPlL5C3')
@@ -510,6 +510,9 @@ class EvtIHM(object):
             oeuvre = self.bm.rechercherInfosWebVideo(self.bibliIHM.getId('dateDiffu').get())
         except CineWarning:
             self._majStatusPL('parsingHtmlKO')
+        except:
+            print("Unexpected error:")
+                
         if oeuvre:
             self._majAfficheOeuvreCinema(oeuvre)
         return oeuvre
