@@ -9,7 +9,7 @@ import random
 import unittest
 
 from Controleur.PlayListManager import PlayListManager
-from Util import Util
+from transverse.Util import Util
 from Vue.EvtProxy import EvtIHM
 from Vue.widget.ProgressVideoBar import Pbar
 from Vue.widget.TimerBA import TimerBA

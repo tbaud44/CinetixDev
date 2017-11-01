@@ -7,6 +7,7 @@ Classe gerant les traitements sur l'ihm
 proxy entre l'ihm et les classes Manager
 '''
 from datetime import date
+import datetime
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
@@ -55,7 +56,7 @@ class EvtIHM(object):
         self.initialiserVideosBibliIHM()
         try:
             '''recherche et charge la playlist du jour à cette heure'''
-            plJour = self.pm.rechercherPLprocheDate(date.today())
+            plJour = self.pm.rechercherPLprocheDate(datetime.datetime.now())
             self.chargerPL(plJour)
             libelleMessage = Util.configValue('messages', 'PLRechercheOK')
             messagebox.showwarning(

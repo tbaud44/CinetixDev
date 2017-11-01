@@ -30,6 +30,17 @@ class Util:
         Util.config.set(rubrique, clef, newValue)
     setConfigValue = staticmethod(setConfigValue)
     
+    '''calcule une font police'''
+    def getFont(nomFont):
+        fontConfig=Util.configValue('polices', nomFont)
+        mafont = fontConfig.split(',')
+        if len(mafont) == 3:
+            return (mafont[0], int(mafont[1]), mafont[2])
+        if len(mafont) == 2:
+            return (mafont[0], int(mafont[1]))
+    
+    getFont = staticmethod(getFont)
+
     def listerRepertoire(path, cheminAbsolu=True):  
         fichier=[]  
         for root, dirs, files in os.walk(path):  
