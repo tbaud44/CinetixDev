@@ -51,7 +51,7 @@ class EvtIHM(object):
         self.miseAJourEtat('etatDebut')
         '''scan du repertoire video'''
         self.bm.scanDisk()
-        '''methode qui remplit les widgets de donnees
+        '''methode asynchrone qui remplit les widgets de donnees
         '''
         self.initialiserVideosBibliIHM()
         try:
@@ -69,7 +69,9 @@ class EvtIHM(object):
                 "Attention",
                 libelleMessage 
                 )
-        self.miseAJourEtat('etatFin')
+        #on regarde si un scandisk est en cours d'executio
+        #met a jour status application si scandisk asynchrone est termine
+        self.checkStatusChargementBibliotheque()
         
     def transfertCurrentVideoEntetePL(self):
         '''
@@ -164,9 +166,18 @@ class EvtIHM(object):
          except AttributeError:
              pass    #peut arriver lors d'un test unitaire
      
-                
+         '''methode qui teste le status du chargement de la bibliotheque et rafraichit etat si termine'''
+    def checkStatusChargementBibliotheque(self):
+        if  not self.bm.getStatusChargementEnCours():
+            self.miseAJourEtat("etatFin")
+            #on rafraichit la bibliotheque
+            self.initialiserVideosBibliIHM()
+        else:
+            #on reteste dans 10 sec
+            widgetEtat = self.bibliIHM.getId('labelEtat')     
+            widgetEtat.after(10*1000, self.checkStatusChargementBibliotheque)
                            
-         '''methode qui met a jour le timerBA avec une valeur saisie par l administrateur'''
+        '''methode qui met a jour le timerBA avec une valeur saisie par l administrateur'''
     def miseAJourTimerBA(self, timerBA, entryNewValueDureeAttente):
         'p1 timerBA'
         'p2 tk entry'
@@ -329,12 +340,16 @@ class EvtIHM(object):
                 index = playlistIHM.curselection()[0]
         # il faut calculer la nouvelle duree en soustrayant
                 selVideoIHM = playlistIHM.get(index)
-                selVideoObj = self.bm.rechercherVideo(selVideoIHM)
-                duree = self.bibliIHM.getId('entryDureePL').get()
-                dureeEnSecondes = int(Util.minTosec(duree))
-                dureeEnSecondes -= selVideoObj.duree
-                self.__setChampDisabledValue('entryDureePL', Util.secToms(dureeEnSecondes))
-                
+                try:
+                    selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+                    duree = self.bibliIHM.getId('entryDureePL').get()
+                    dureeEnSecondes = int(Util.minTosec(duree))
+                    dureeEnSecondes -= selVideoObj.duree
+                    self.__setChampDisabledValue('entryDureePL', Util.secToms(dureeEnSecondes))
+                except CineException:
+                    #Cas anormal ou l'objet video n'a pas ete trouve
+                    #on ne bloque pas mais on affiche juste un message
+                    print ('probleme de recherche video obj')    
             playlistIHM.delete(playlistIHM.curselection()[0])
     
     def verifierProfilAdmin(self, tk, bibliVue):

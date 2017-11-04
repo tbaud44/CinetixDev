@@ -13,6 +13,7 @@ import pickle
 from urllib.error import HTTPError
 from urllib.request import urlretrieve
 import urllib.request
+import urllib.parse
 import re
 from bs4 import BeautifulSoup
 
@@ -23,7 +24,7 @@ from Modele.BA import BA
 from Vue.widget import PlayerVLCLight
 from transverse.CinetixException import CineException, CineWarning
 from transverse.Util import Util
-
+from transverse.GestionDureeVideo import DureeVideos
 
 class BiblioManager(object):
     '''
@@ -34,6 +35,7 @@ class BiblioManager(object):
         Constructor
         '''
         self.__load()
+        self.setStatusChargementEnCours(False)
         
     def __load(self):
         '''
@@ -100,6 +102,7 @@ class BiblioManager(object):
                 return "yellow3" 
         return video.color
      
+    
     def scanDisk(self):
         '''
         compare le repertoire de la bibliotheque avec l'objet memoire
@@ -111,32 +114,21 @@ class BiblioManager(object):
         if not os.path.isdir(repVideos):
             raise CineException('repVideoKO')
             return
-        player =  PlayerVLCLight.Player() #player utilisé pour calcuker duree video
-        #on stocke temporairement les videos du repertoire
-        videosRepertoireTemp = {};
-        for videoFile in Util.listerRepertoire(repVideos, False):
-            if not videoFile in self.biblioGenerale.videos:
-                #nouveau fichier video donc on ajoute on dico memoire
-                dureeVideo = player.GetDurationVideo(videoFile, repVideos)
-                mm, ss = divmod(dureeVideo, 60)
-                print ("video et duree:",videoFile, mm,ss)
-                
-                newVideo = Video(videoFile, dureeVideo)
-                try:
-                    mtime = os.path.getmtime(str(os.path.join(repVideos, videoFile)))
-                except OSError:
-                    mtime = 0
-                    print ("Problem parsing date fichier " + videoFile)
-                last_modified_date = date.fromtimestamp(mtime)
-                newVideo.setDateFichier(last_modified_date)
-                #Par choix de jean marc, creation par defaut d'une B.A
-                videosRepertoireTemp[videoFile]=BA(newVideo)
-            else:
-                #on recopie l'objet video existant
-                videosRepertoireTemp[videoFile]=self.biblioGenerale.videos[videoFile]    
         
-        self.biblioGenerale.videos=videosRepertoireTemp
-        
+        #appel a un thread qui va scanner, en arriere plan (non bloquant) le repertoire des videos
+        # et calculer les durees des nouvelles videos
+        threadDureeVideos = DureeVideos(repVideos, self)
+        self.setStatusChargementEnCours(True)
+        threadDureeVideos.start()
+    
+    def setStatusChargementEnCours(self, boolStatus):
+        '''methode pour gerer etat du status de chargement de la bibliotheque'''
+        self.chargementEnCours = boolStatus #booleen pour gerer etat du thread de calcule des durees de videos
+    
+    def getStatusChargementEnCours(self):
+        '''methode pour gerer etat du status de chargement de la bibliotheque'''
+        return self.chargementEnCours  #booleen pour gerer etat du thread de calcule des durees de videos
+            
     def enregistrerVideo(self, video:Video):
         '''enregistrement dans la bibliotheque la video
         suppression ancienne reference video'''
@@ -224,14 +216,15 @@ class BiblioManager(object):
         oeuvre = Oeuvre(titre, infos, synopsis)
         #recuperation des images pour requete http
         repAffiche=Util.configValue('commun', 'repertoireAffiche')
-        nomFichier1Affiche=repAffiche + titre +'-G.jpg'
+
+        nomFichier1Affiche=repAffiche + urllib.parse.quote(titre, safe='') +'-G.jpg'
         oeuvre.setAfficheImage(2, nomFichier1Affiche)
         
         #on teste si le fichier jpeg a deja ete telecharge
         if not os.path.isfile(nomFichier1Affiche): #le fichier image a t-il deja ete telecharge?
             urlretrieve(urlImage, nomFichier1Affiche) #creer un fichier jpg dans le repertoire en telechargent par http
         
-        nomFichier2Affiche=repAffiche + titre +'-P.jpg'
+        nomFichier2Affiche=repAffiche + urllib.parse.quote(titre, safe='') +'-P.jpg'
         oeuvre.setAfficheImage(1, nomFichier2Affiche)
         if not os.path.isfile(nomFichier2Affiche):
             urlretrieve(urlImagePetite, nomFichier2Affiche)

@@ -51,7 +51,7 @@ class Interface:
         largeurEtatLibelle = self._getDimension('etatLibelle.width')
         labelL1C2 = tk.Label(self.root, textvariable=etatLibelle, anchor=tk.NW, width=largeurEtatLibelle, bg="#FEFEE2", font=Util.getFont('font3'))
         labelL1C2.grid(row=1, column=2, columnspan=3, padx=1, sticky=tk.W)
-        
+        self.dicoWidget['labelEtat']=labelL1C2
         #L1C3 titre global
         #heureL1C6
         strHeure = tk.StringVar()
@@ -180,7 +180,7 @@ class Interface:
         self.dicoWidget['entryVideoPL']=entryVideoPL
         
         framePlL3C3.grid(row=3, column=3, padx=5, sticky=tk.SW)
-        print (framePlL3C3.grid_info())
+        
         self.photosIHM['photoCopier'] = tk.PhotoImage(file=Util.configValue('commun', 'copier'))        
         boutonTransfertL3C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=self.evtProxy.transfertCurrentVideoEntetePL)
         boutonTransfertL3C2.grid(row=3, column=2, sticky=tk.W)
@@ -242,14 +242,14 @@ class Interface:
         tbaL7C4.afficherChrono(False)
         
         self.photosIHM['photoPlay'] = tk.PhotoImage(file=Util.configValue('commun', 'imgPlay'))        
-        boutonPlayPlL9C4=tk.Button(self.root, image=self.photosIHM['photoPlay'], command=\
+        boutonPlayPlL9C3=tk.Button(self.root, image=self.photosIHM['photoPlay'], command=\
                 lambda x=listPlL5C3,y=pbarVideo,w=tbaL7C4:self.evtProxy.playPL(x, y, w))
-        boutonPlayPlL9C4.grid(row=9, column=4, padx=5, pady=5)
-        self.dicoWidget['btnPlay']=boutonPlayPlL9C4
+        boutonPlayPlL9C3.grid(row=9, column=3, padx=5, pady=5)
+        self.dicoWidget['btnPlay']=boutonPlayPlL9C3
         
         largeurBtnStop = self._getDimension('btnStop.width')
-        boutonStopPlL10C4=tk.Button(self.root, text="STOP", width=largeurBtnStop, command=self.evtProxy.stopperPL)
-        boutonStopPlL10C4.grid(row=10, column=4, padx=5,sticky=tk.N)
+        boutonStopPlL10C3=tk.Button(self.root, text="STOP", width=largeurBtnStop, command=self.evtProxy.stopperPL)
+        boutonStopPlL10C3.grid(row=10, column=3, padx=5,sticky=tk.N)
        
         pwL3C4 = tk.PanedWindow(self.root, orient=tk.VERTICAL) #regroupe la liste et le sidebar
         
@@ -287,7 +287,7 @@ class Interface:
         
         boutonFlecheBas.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=6, column=1)
         
-        pwL3C4.grid(row=3, column=4, rowspan=4, sticky=tk.NW)
+        pwL3C4.grid(row=3, column=4, rowspan=3, sticky=tk.NW)
 
         labelLancementBaL6C4 = tk.Label(self.root, text="Lancement dans\n(en secondes) ", bg="#FEFEE2", font=Util.getFont('font1'))
         labelLancementBaL6C4.grid(row=6, column=4, padx=5, sticky=tk.NW)
