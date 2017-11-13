@@ -43,7 +43,7 @@ class TimerBA(tk.Canvas):
         nbSecondesRestantes = self.duree - self.nbSecondesEcoulees
        # if self.idText:
        #     self.delete(self.idText)
-        self.create_text(40, 40, text=nbSecondesRestantes,font=('courier', 25, 'bold'), fill="yellow")
+        self.create_text(40, 40, text=nbSecondesRestantes,font=('courier', 25, 'bold'), fill="black")
               
        # self.idText = idText
         if (decompte and partieEcoulee< 359.99):  #le cercle n'est pas encore rempli

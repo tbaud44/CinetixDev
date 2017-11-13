@@ -21,7 +21,7 @@ class BA(Video):
         Video.__init__(self, mere.nomFichier, mere.duree)
         self.dateFichier = mere.dateFichier
         self.type = Type.BA
-        self.color = "chocolate"
+        self.color = "lightgreen"
         self.oeuvreCinema = None
         
     def setOeuvreCinema(self, oeuvreCinema):

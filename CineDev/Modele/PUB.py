@@ -21,7 +21,7 @@ class PUB(Video):
         self.type = Type.PUB
         self.contact = ""
         self.montantCotis = 0.0
-        self.color="yellow"
+        self.color="pink"
         self.dateDeb = None
         self.dateFin = None
         

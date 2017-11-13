@@ -18,5 +18,5 @@ class AnimationBeaulieu(Video):
         Video.__init__(self, mere.nomFichier, mere.duree)
         self.dateFichier = mere.dateFichier
         self.type = Type.ANIM_BEAULIEU
-        self.color="aquamarine"
+        self.color="khaki"
          

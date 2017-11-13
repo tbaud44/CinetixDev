@@ -88,7 +88,7 @@ class Player(Tk.Frame):
         if fullscreen:
             #self.parent.attributes('-fullscreen', 2) #fonctionne bien que sous linux
             #self.parent.wm_state(newstate="zoomed") #test ne fonctionne que sous windows et pas bien
-            #self.parent.overrideredirect(True) # que sous windows. supprime decoration fenetre
+            self.parent.overrideredirect(True) # que sous windows. supprime decoration fenetre
             i=1
         #wdw.geometry('+400+400')
         self.debug = False
