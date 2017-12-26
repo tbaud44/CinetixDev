@@ -24,7 +24,13 @@ Prerequis
 		avec un seul ecran en mode dev)
 	resolution Ecran1 1360x768
 	resolution Ecran2 (a voir sur place la config actuelle)
-	
+
+specifique driver carte PC BA
+-----------------------------
+	Installer les pilotes/utilitaires de la carte ATI Radeon (AMD Catalist Controler center)
+		Desktop2(cinema): 1360*768 60 Hz 32 bits
+		Desktop 1(PC): 1360*1024 60 Hz 32 bits
+		My digital Flat Panels:  scale image to full panel size	
 Python
 ------
 	https://www.python.org/downloads/
