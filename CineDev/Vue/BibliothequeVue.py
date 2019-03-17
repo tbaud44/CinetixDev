@@ -8,7 +8,8 @@ ne contient pas de traitement ni de logique metier
 '''
 import time
 from tkinter import Canvas,font
-
+import re
+import configparser
 from Vue.EvtProxy import EvtIHM
 from Vue.widget.LabelPlus import LabelPlus
 from Vue.widget.ProgressVideoBar import Pbar
@@ -16,7 +17,6 @@ from Vue.widget.TimerBA import TimerBA
 import tkinter as tk
 from transverse.Util import Util
 from tkinter.font import Font
-
 
 #import progressbar
 class Interface:
@@ -48,7 +48,7 @@ class Interface:
         #L1C3 titre global
         etatLibelle = tk.StringVar()
         self.dicoWidget['SVetatLibelle']=etatLibelle
-        largeurEtatLibelle = self._getDimension('etatLibelle.width')
+        largeurEtatLibelle = self._getDimension('etatLibelle')
         labelL1C2 = tk.Label(self.root, textvariable=etatLibelle, anchor=tk.NW, width=largeurEtatLibelle, bg="#FEFEE2", font=Util.getFont('font3'))
         labelL1C2.grid(row=1, column=2, columnspan=3, padx=1, sticky=tk.W)
         self.dicoWidget['labelEtat']=labelL1C2
@@ -56,7 +56,7 @@ class Interface:
         #heureL1C6
         strHeure = tk.StringVar()
         self.dicoWidget['SVheure']=strHeure
-        largeurHeure = self._getDimension('heure.width')
+        largeurHeure = self._getDimension('heure')
         
         labelL1C5 = tk.Label(self.root, textvariable=strHeure, width=largeurHeure, font=Util.getFont('font3'))
         
@@ -105,10 +105,12 @@ class Interface:
         
         pwL3C1 = tk.PanedWindow(self.root, orient=tk.HORIZONTAL) #regroupe la liste et le sidebar
         # first pane, which would get widgets gridded into it:
-        largeurBibli = self._getDimension('bibli.width')
-        hauteurBibli = self._getDimension('bibli.height')
+        dimBibli = self._getDimension('bibli')
         
-        listVideos = tk.Listbox(pwL3C1, width=largeurBibli, height=hauteurBibli, font=Util.getFont('font2'))
+        largeurBibli = dimBibli[0]
+        hauteurBibli = dimBibli[1]
+        
+        listVideos = tk.Listbox(pwL3C1, width=largeurBibli, selectmode=tk.MULTIPLE, height=hauteurBibli, font=Util.getFont('font2'))
         self.dicoWidget['listVideos']=listVideos
         
         sbar = tk.Scrollbar(pwL3C1)
@@ -136,12 +138,14 @@ class Interface:
         boutonQuitter=tk.Button(pwL9C1, command=self.quitter, text="Quitter") 
         boutonAdmin=tk.Button(pwL9C1, text="Administration", command=\
                      lambda x=self.root,y=self: self.evtProxy.verifierProfilAdmin(x,y))
-        largeurBtnQuitter = self._getDimension('btnQuitter.width')
-        hauteurBtnQuitter = self._getDimension('btnQuitter.height')
+        dimBtnQuitter = self._getDimension('btnQuitter')
+        largeurBtnQuitter = dimBtnQuitter[0]
+        hauteurBtnQuitter = dimBtnQuitter[1]
         
         pwL9C1.add(boutonQuitter, width=largeurBtnQuitter, height=hauteurBtnQuitter)
-        largeurBtnAdmin = self._getDimension('btnAdmin.width')
-        hauteurBtnAdmin = self._getDimension('btnAdmin.height')
+        dimBtnAdmin= self._getDimension('btnAdmin')
+        largeurBtnAdmin = dimBtnAdmin[0]
+        hauteurBtnAdmin = dimBtnAdmin[1]
         
         pwL9C1.add(boutonAdmin,width=largeurBtnAdmin, height=hauteurBtnAdmin)
         pwL9C1.grid(row=9, sticky=tk.N, column=1, padx=5)
@@ -173,28 +177,31 @@ class Interface:
         self.dicoWidget['entryDureePL']=entryDureePL
         
         tk.Label(framePlL3C3, text='Film projection').grid(in_=framePlL3C3, sticky=tk.NW, row=3, column=0)
-        largeurEntryVideoPL = self._getDimension('inputVideoPL.width')
+        largeurEntryVideoPL = self._getDimension('inputVideoPL')
         
         entryVideoPL= tk.Entry(framePlL3C3, width = largeurEntryVideoPL, state='readonly')
         entryVideoPL.grid(in_=framePlL3C3, sticky=tk.NW, row=3, column=1, columnspan=3)
         self.dicoWidget['entryVideoPL']=entryVideoPL
         
-        framePlL3C3.grid(row=3, column=3, padx=5, sticky=tk.SW)
+        framePlL3C3.grid(row=3, column=3, padx=5, sticky=tk.NW)
         
         self.photosIHM['photoCopier'] = tk.PhotoImage(file=Util.configValue('commun', 'copier'))        
         boutonTransfertL3C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=self.evtProxy.transfertCurrentVideoEntetePL)
         boutonTransfertL3C2.grid(row=3, column=2, sticky=tk.W)
 
         msgInfoLibelle = tk.StringVar()
-        largeurStatusPL = self._getDimension('statusPL.width')
+        dimStatusPL = self._getDimension('statusPL')
+        largeurStatusPL = dimStatusPL[0]
+        hauteurStatusPL = dimStatusPL[1]
         
-        labelStatusPlL4C3 = LabelPlus(self.root, textvariable=msgInfoLibelle, width=largeurStatusPL, fg= "dark green" , bg="#DF6D14", 
-                                      font=Util.getFont('font0'))
+        labelStatusPlL4C3 = LabelPlus(self.root, textvariable=msgInfoLibelle, height=hauteurStatusPL, width=largeurStatusPL, fg= "dark green" , bg="#DF6D14", 
+                                      font=Util.getFont('font2'))
         labelStatusPlL4C3.grid(row=4, column=3, padx=5, sticky=tk.NW)
         self.dicoWidget['statusPL']=labelStatusPlL4C3
         
-        largeurListPL = self._getDimension('listPL.width')
-        hauteurListPL = self._getDimension('listPL.height')
+        dimListPL = self._getDimension('listPL')
+        largeurListPL = dimListPL[0]
+        hauteurListPL = dimListPL[1]
         
         pwL5C3 = tk.PanedWindow(self.root, orient=tk.HORIZONTAL) #regroupe la liste et le sidebar
         
@@ -205,7 +212,7 @@ class Interface:
         pwL5C3.add(listPlL5C3)
         pwL5C3.add(sbar2)
         
-        pwL5C3.grid(row=5, column=3, padx=5, rowspan=3, sticky=tk.NW)
+        pwL5C3.grid(row=5, column=3, padx=5, rowspan=2, sticky=tk.NW)
         self.dicoWidget['listPlL5C3']=listPlL5C3
         
         boutonTransfertL5C2=tk.Button(self.root, image=self.photosIHM['photoCopier'], command=\
@@ -216,24 +223,25 @@ class Interface:
         boutonTransfertL5C2.grid(row=5, column=2, rowspan=3, sticky=tk.W)
 
         #ajout d'un label avec StringVar pour afficher la progression de la duree video
-        pwL8C3 = tk.PanedWindow(self.root, orient=tk.VERTICAL) #regroupe la liste et le sidebar
+        pwL7C3 = tk.PanedWindow(self.root, orient=tk.VERTICAL) #regroupe la liste et le sidebar
         
         tempsEcouleVideo = tk.StringVar()
-        labeltempsEcouleVideo = tk.Label(pwL8C3, textvariable=tempsEcouleVideo,  font=Util.getFont('font1'))
+        labeltempsEcouleVideo = tk.Label(pwL7C3, textvariable=tempsEcouleVideo,  font=Util.getFont('font1'))
         tempsEcouleVideo.set("0 / 0 (min)")
-        labeltempsEcouleVideo.grid(in_=pwL8C3, row=1, column=1, padx=10, sticky=tk.NW)
+        labeltempsEcouleVideo.grid(in_=pwL7C3, row=1, column=1, padx=10, sticky=tk.NW)
         
-        largeurPbarVideo = self._getDimension('pbarVideo.width')
-        pbarVideo = Pbar (master=pwL8C3, strValue=tempsEcouleVideo, orient="horizontal", length=largeurPbarVideo, mode="determinate")
-        pbarVideo.grid(in_=pwL8C3, row=2, column=1, padx=5, pady=1, sticky=tk.NW)
+        largeurPbarVideo = self._getDimension('pbarVideo')*10
+        pbarVideo = Pbar (master=pwL7C3, strValue=tempsEcouleVideo, orient="horizontal", length=largeurPbarVideo, mode="determinate")
+        pbarVideo.grid(in_=pwL7C3, row=2, column=1, padx=5, pady=1, sticky=tk.NW)
         self.dicoWidget['pbar']= pbarVideo
         
-        pwL8C3.grid(row=8, column=3, padx=5, sticky=tk.NW)
+        pwL7C3.grid(row=7, column=3, padx=5, sticky=tk.NW)
      
         dureeAttente = Util.configValue('commun', 'dureeAttenteLecturePLMax')
         #necessite de mettre variable tbaL7c4 a cause methode afficherFrameAdmin
-        largeurTimerBA = self._getDimension('timerBA.width')
-        hauteurTimerBA = self._getDimension('timerBA.height')
+        dimTimerBA = self._getDimension('timerBA')
+        largeurTimerBA = dimTimerBA[0]
+        hauteurTimerBA = dimTimerBA[1]
         
         tbaL7C4 = TimerBA(self.root, duree=dureeAttente, bg="#FEFEE2", height=hauteurTimerBA, width=largeurTimerBA, highlightbackground="#FEFEE2")
         self.dicoWidget['tbaL7C4']=tbaL7C4
@@ -242,28 +250,28 @@ class Interface:
         tbaL7C4.afficherChrono(False)
         
         self.photosIHM['photoPlay'] = tk.PhotoImage(file=Util.configValue('commun', 'imgPlay'))        
-        boutonPlayPlL9C3=tk.Button(self.root, image=self.photosIHM['photoPlay'], command=\
+        boutonPlayPlL8C3=tk.Button(self.root, image=self.photosIHM['photoPlay'], command=\
                 lambda x=listPlL5C3,y=pbarVideo,w=tbaL7C4:self.evtProxy.playPL(x, y, w))
-        boutonPlayPlL9C3.grid(row=9, column=3, padx=5, pady=5)
-        self.dicoWidget['btnPlay']=boutonPlayPlL9C3
+        boutonPlayPlL8C3.grid(row=8, column=3, padx=5, pady=5)
+        self.dicoWidget['btnPlay']=boutonPlayPlL8C3
         
-        largeurBtnStop = self._getDimension('btnStop.width')
-        boutonStopPlL10C3=tk.Button(self.root, text="STOP", width=largeurBtnStop, command=self.evtProxy.stopperPL)
-        boutonStopPlL10C3.grid(row=10, column=3, padx=5,sticky=tk.N)
+        largeurBtnStop = self._getDimension('btnStop')
+        boutonStopPlL9C3=tk.Button(self.root, text="STOP", width=largeurBtnStop, command=self.evtProxy.stopperPL)
+        boutonStopPlL9C3.grid(row=9, column=3, padx=5,sticky=tk.N)
        
         pwL3C4 = tk.PanedWindow(self.root, orient=tk.VERTICAL) #regroupe la liste et le sidebar
         
-        largeurBtnEnregistrer = self._getDimension('btnEnregistrer.width')
+        largeurBtnEnregistrer = self._getDimension('btnEnregistrer')
         boutonEnregistrer=tk.Button(pwL3C4, width=largeurBtnEnregistrer, state='disabled', text="Enregistrer", command=\
                 lambda x=self:self.evtProxy.enregistrerPL(x))
         boutonEnregistrer.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=1, column=1, columnspan=3)
         self.dicoWidget['btnEnreg']=boutonEnregistrer
         
-        largeurBtnCharger = self._getDimension('btnCharger.width')
+        largeurBtnCharger = self._getDimension('btnCharger')
         boutonCharger=tk.Button(pwL3C4, width=largeurBtnCharger, text="Charger", command=self.evtProxy.chargerPL)   
         boutonCharger.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=2, column=1, columnspan=3)
         
-        largeurBtnVider = self._getDimension('btnVider.width')
+        largeurBtnVider = self._getDimension('btnVider')
         boutonVider=tk.Button(pwL3C4, width=largeurBtnVider, text="Vider", command=\
                 lambda x=listPlL5C3:self.evtProxy.viderPL(x))
         boutonVider.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=3, column=1, columnspan=3)
@@ -278,6 +286,9 @@ class Interface:
         
         boutonCroix=tk.Button(pwL3C4, image=self.photosIHM['photoCroix'] , command=\
                                   lambda x=listPlL5C3:self.evtProxy.supprimerVideoPL(x))
+        #Demande de jm potier: touche suppr qui supprime la selection dans la playlist
+        listPlL5C3.bind("<KeyPress-Delete>",lambda x:self.evtProxy.supprimerVideoPL(listPlL5C3))
+        
         boutonCroix.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=5, column=2)
         
         self.photosIHM['photoFlecheBas'] = tk.PhotoImage(file=Util.configValue('commun', 'imgFlecheBas'))        
@@ -289,7 +300,7 @@ class Interface:
         
         pwL3C4.grid(row=3, column=4, rowspan=3, sticky=tk.NW)
 
-        labelLancementBaL6C4 = tk.Label(self.root, text="Lancement dans\n(en secondes) ", bg="#FEFEE2", font=Util.getFont('font1'))
+        labelLancementBaL6C4 = tk.Label(self.root, text="Lancement\ndans\n(secondes) ", bg="#FEFEE2", font=Util.getFont('font1'))
         labelLancementBaL6C4.grid(row=6, column=4, padx=5, sticky=tk.NW)
         self.dicoWidget['titreOeuvre']= tk.StringVar()
         
@@ -298,22 +309,31 @@ class Interface:
        
         #Utilisation d'un panewWindow pour gerer formattage relief='ridge'
         pwL3C5 = tk.PanedWindow(self.root,  borderwidth=0, orient=tk.VERTICAL, bg="#FEFEE2") #regroupe la liste et le sidebar
-        largeurCanvasAffiche = self._getDimension('canvasAffiche.width')
-        hauteurCanvasAffiche = self._getDimension('canvasAffiche.height')
+        dimCanvasAffiche = self._getDimension('canvasAffiche')
+        largeurCanvasAffiche = dimCanvasAffiche[0]
+        hauteurCanvasAffiche = dimCanvasAffiche[1]
         
         canvasAfficheFilmL3C5 = Canvas(pwL3C5, width=largeurCanvasAffiche, height=hauteurCanvasAffiche ,bg="#FEFEE2", highlightbackground="#FEFEE2")
         #canvasAfficheFilmL3C5.grid(row=3, column=5, rowspan=4, sticky=tk.NW)
         self.dicoWidget['canvasAffiche']=canvasAfficheFilmL3C5
         self.dicoWidget['infosOeuvre']= tk.StringVar()
-        largeurBtnVider = self._getDimension('btnVider.width')
+        largeurBtnVider = self._getDimension('btnVider')
         
-        hauteurInfosAffiche = self._getDimension('infosAffiche.height')
-        labelInfosFilmL7C5 = tk.Label(pwL3C5, width=largeurCanvasAffiche, height=hauteurInfosAffiche, anchor=tk.NW, justify=tk.LEFT, 
+        dimInfosAffiche = self._getDimension('infosAffiche')
+        largeurInfosAffiche = dimInfosAffiche[0]
+        hauteurInfosAffiche = dimInfosAffiche[1]
+        labelInfosFilmL7C5 = tk.Label(pwL3C5, width=largeurInfosAffiche, height=hauteurInfosAffiche, anchor=tk.NW, justify=tk.LEFT, 
                                       textvariable=self.dicoWidget['infosOeuvre'] , wraplength=220, bg="#FEFEE2")
      #   labelInfosFilmL7C5.grid(row=7, column=5, rowspan=2, padx=5, sticky=tk.NS)
         pwL3C5.add(canvasAfficheFilmL3C5)
         pwL3C5.add(labelInfosFilmL7C5)
-        pwL3C5.grid(row=3, column=5, rowspan=8, sticky=tk.NW)
+        pwL3C5.grid(row=3, column=5, rowspan=6, sticky=tk.NW)
+        
+        self.photosIHM['photoWebcam'] = tk.PhotoImage(file=Util.configValue('commun', 'imgWebcam'))        
+        boutonWebcamL9C5=tk.Button(self.root, image=self.photosIHM['photoWebcam'], command=self.evtProxy.playVideoWebcam)
+        boutonWebcamL9C5.grid(row=9, column=5, padx=5, pady=5)
+        self.dicoWidget['btnWebcam']=boutonWebcamL9C5
+        
         ###########################################
         
        # f = Fiche(self.root)
@@ -329,6 +349,12 @@ class Interface:
             lambda x=self.root:self.evtProxy.afficheFrameFicheVideo(x)) #apres validation password administrateur, le statut passera enabled                  
         self.aMenu.add_command(label="Lire", command=\
             lambda x=self.root:self.evtProxy.playVideoPC(x))    
+        self.aMenu.add_command(label="Supprimer", state='disabled', command=\
+            lambda x=self.root:self.evtProxy.supprimerFichier(x))    
+        self.aMenu.add_command(label="Reference PL", state='disabled', command=\
+                               lambda x=self.root:self.evtProxy.afficherRefPL(x))    
+    
+    
     def popup(self, event):
         '''
         methode evenement click droit qui affiche le menu contextuel
@@ -368,6 +394,14 @@ class Interface:
         self.dicoWidget['entryAdminDureeAttente']=entryAdminDureeAttente
         self.dicoWidget['varCheckAttente']=varCheckAttente
         entryAdminDureeAttente.bind("<FocusOut>", lambda x:self.evtProxy.miseAJourTimerBA(self.dicoWidget['tbaL7C4'], entryAdminDureeAttente))
+        
+        #ajout boutton pour check playlist
+        dimBtnCheckPL = self._getDimension('btnCheckPL')
+        largeurBtnCheckPL = dimBtnCheckPL[0]
+        hauteurBtnCheckPL = dimBtnCheckPL[1]
+        boutonCheckPL=tk.Button(frameAdminL8C4, width=largeurBtnCheckPL, height=hauteurBtnCheckPL, text="Verifier PL", command=\
+                     lambda x=self.root: self.evtProxy.afficheFrameCalendrierPL(x)).grid(in_=frameAdminL8C4, sticky=tk.W, row=1, column=0)
+        
         frameAdminL8C4.grid(row=8, column=4, rowspan=2, sticky=tk.NW)
         
     def quitter(self):
@@ -377,9 +411,25 @@ class Interface:
         self.root.quit()
         #sauvegarde de la bibliotheque video memoire sur le disque (bib.obj)
     
-        '''methode qui renvoie la valeur de la dimension d'un widget'''
+        '''methode qui renvoie le couple valeur (width,height) valeur de la dimension d'un widget en fonction resolution ecran'''
     def _getDimension(self, codeDimensionWidget):
-         return Util.configValue('dimensions', codeDimensionWidget)
+        ecranresolution = Util.configValue('dimensions', 'ecran.resolution')
+        resolution= re.match(r"([\d]{3,4})x([\d]{3,4})", ecranresolution)          
+            
+        resolutionXecran = int(resolution.group(1))
+        resolutionYecran = int(resolution.group(2))
+        resolutionReferenceX=1366
+        resolutionReferenceY=768
+                  
+        widgetX= Util.configValue('dimensions', codeDimensionWidget + '.width') #width est obligatoire
+        widgetXCalculee = round((int(widgetX) * resolutionXecran)/resolutionReferenceX)
+        try:
+            widgetY= Util.configValue('dimensions', codeDimensionWidget + '.height') #height est optionnel
+        except configparser.NoOptionError:
+            return widgetXCalculee
+        
+        widgetYCalculee = round((int(widgetY) * resolutionYecran)/resolutionReferenceY)
+        return (widgetXCalculee, widgetYCalculee)
       
     def mainLoop(self):
         '''
