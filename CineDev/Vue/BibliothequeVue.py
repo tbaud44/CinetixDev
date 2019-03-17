@@ -286,7 +286,7 @@ class Interface:
         
         boutonCroix=tk.Button(pwL3C4, image=self.photosIHM['photoCroix'] , command=\
                                   lambda x=listPlL5C3:self.evtProxy.supprimerVideoPL(x))
-        #Demande de jm potier: touche suppr qui supprime la selection dans la playlist
+        #Demande de jean marc potier: touche suppr qui supprime la selection dans la playlist
         listPlL5C3.bind("<KeyPress-Delete>",lambda x:self.evtProxy.supprimerVideoPL(listPlL5C3))
         
         boutonCroix.grid(in_=pwL3C4, sticky=tk.W, padx=5, pady=5, row=5, column=2)
