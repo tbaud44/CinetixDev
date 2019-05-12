@@ -92,6 +92,7 @@ class Player(Tk.Frame):
             i=1
         #wdw.geometry('+400+400')
         self.debug = False
+        self.dureeRestanteSav = 0
         self.fullscreen = fullscreen
         self.videoPlayedTerminee = True #video pas encore jouee 
           
@@ -107,7 +108,8 @@ class Player(Tk.Frame):
         self.videopanel = ttk.Frame(self.parent)
         self.canvas = Tk.Canvas(self.videopanel,bg="black").pack(fill=Tk.BOTH,expand=1)
         self.videopanel.pack(fill=Tk.BOTH,expand=1)
-        
+        self.volume_var = Tk.IntVar()
+        self.volume_var.set(100)    #volume a 100 par defaut
         #en mode plein ecran, aucun bouton de commande
         if not fullscreen:
             ctrlpanel = ttk.Frame(self.parent)
@@ -119,7 +121,7 @@ class Player(Tk.Frame):
             play.pack(side=Tk.LEFT)
             stop.pack(side=Tk.LEFT)
             volume.pack(side=Tk.LEFT)
-            self.volume_var = Tk.IntVar()
+            
             self.volslider = Tk.Scale(ctrlpanel, variable=self.volume_var, command=self.volume_sel, 
                     from_=0, to=100, orient=Tk.HORIZONTAL, length=100)
             self.volslider.pack(side=Tk.LEFT)
@@ -226,21 +228,22 @@ class Player(Tk.Frame):
         # since the self.player.get_length can change while playing,
         # re-set the timeslider to the correct range.
         length = self.player.get_length() #duree video en ms
+        
         dbl = length * 0.001
         if not self.fullscreen:
             self.timeslider.config(to=dbl)
 
         # update the time on the slider
         tyme = self.player.get_time()
+        
         if tyme == -1:
             tyme = 0
         dbl = tyme * 0.001
+        
         if not self.fullscreen:
             self.timeslider_last_val = ("%.0f" % dbl) + ".0"
         # don't want to programatically change slider while user is messing with it.
         # wait 2 seconds after user lets go of slider
-       # print (self.player.get_length())
-       # print("dbl est {} et lenght {}.".format(dbl,length * 0.001))
         if not self.fullscreen:
             if time.time() > (self.timeslider_last_update + 2.0):
                 self.timeslider.set(dbl)
@@ -251,12 +254,19 @@ class Player(Tk.Frame):
            # self.timer.stop()     #on tue le thread du timer
             self.videoPlayedTerminee = True   
 
-    def __estTerminee(self, dureeTotale, dureeEnCours):
-        '''marge erreur de 300 ms'''
-        if dureeEnCours > 0 and abs(dureeEnCours - dureeTotale)<300: #la lecture de la video est terminee
-            return True
+    def __estTerminee(self, dureeEnCours, dureeTotale):
+        '''marge erreur de 300 ms.Correctif le 16.02.2018 ajout mecanisme anti blocage fin video'''
+        dureeRestante = abs(dureeEnCours - dureeTotale)
+        #print ("duree restante", dureeRestante)
+        if dureeEnCours > 0 and dureeRestante<300: #la lecture de la video est terminee à 300ms pres
+          return True
         else:
-            return False
+            '''mecanisme pour detecter blocage eventuel fin de la video'''
+            if dureeEnCours > 0 and dureeRestante == self.dureeRestanteSav:
+                '''la video est bloquee car le timecurrent n a pas bouge'''
+                return True
+        self.dureeRestanteSav = dureeRestante    
+        return False
         
     def scale_sel(self, evt):
         if self.player == None:
@@ -292,7 +302,7 @@ class Player(Tk.Frame):
             volume = 100
         if self.player.audio_set_volume(volume) == -1:
             #self.errorDialog("Failed to set volume")
-            print ("Warning: Probleme pour changer volumz")
+            print ("Warning: Probleme pour changer volume")
 
 
 

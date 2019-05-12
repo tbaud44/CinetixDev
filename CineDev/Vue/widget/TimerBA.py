@@ -20,6 +20,8 @@ class TimerBA(tk.Canvas):
         self.nbSecondesEcoulees=0
         self.decompteTermine=False
         self.idText = None
+        self.height = kw['height']
+        self.width = kw['width']
 
     def reinitialiser(self, duree=20):
         
@@ -37,13 +39,13 @@ class TimerBA(tk.Canvas):
             partieEcoulee=359.99
             self.decompteTermine=True    
         #coord = 10, 10, 140, 110
-        coord = 10, 10, 80, 60
+        coord = 8, 8, self.width, self.height
         self.delete(tk.ALL)
         self.create_arc(coord, start=0, extent=partieEcoulee, fill="red")
         nbSecondesRestantes = self.duree - self.nbSecondesEcoulees
        # if self.idText:
        #     self.delete(self.idText)
-        self.create_text(40, 40, text=nbSecondesRestantes,font=('courier', 25, 'bold'), fill="black")
+        self.create_text(40, 40, text=nbSecondesRestantes,font=('courier', 32, 'bold'), fill="black")
               
        # self.idText = idText
         if (decompte and partieEcoulee< 359.99):  #le cercle n'est pas encore rempli

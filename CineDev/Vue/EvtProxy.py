@@ -16,9 +16,10 @@ from PIL import ImageTk, Image
 from Controleur.BiblioManager import BiblioManager
 from Controleur.PlayListManager import PlayListManager
 from Modele.Video import Type, Video
-from Vue import AdminPassword
+from Vue import AdminPassword, FrameRefPL
 from Vue.FicheVideo import Fiche
 from Vue.widget import PlayerVLC2
+from Vue.widget import CalendarPL
 import tkinter as tk
 from transverse.CinetixException import CineException, CineWarning
 from transverse.Util import Util
@@ -95,19 +96,23 @@ class EvtIHM(object):
     # get the line's text
         listWidget = self.bibliIHM.getId('listVideos')  
         plIHM = self.bibliIHM.getId('listPlL5C3')
-        selVideoIHM = self._getCurrentVideoBibli()
-        selVideoObj = self.bm.rechercherVideo(selVideoIHM)
-        #controler que la video selectionnee n'est pas une pub inactive (couleur yellow3)
-        if self.bm.getColor(selVideoObj)=='yellow3':
-            raise CineException('PubOutOfDate')
-        index = listWidget.curselection()[0]
-        bgVideo = listWidget.itemcget(index, "bg") #permet de recopier l'attribut couleur sur la PL
-        plIHM.insert(tk.END, selVideoIHM)
-        plIHM.itemconfig(tk.END, bg=bgVideo)
-        #mettre a jour la duree PL
         duree = self.bibliIHM.getId('entryDureePL').get() #la duree de la PL est la somme  des durees des videos
         dureeEnSecondes = int(Util.minTosec(duree))
-        dureeEnSecondes += selVideoObj.duree
+        
+        videosIHM = self._getCurrentVideoBibli(oneSelectionOnly=False)
+        for i,selVideoIHM in enumerate(videosIHM): 
+            selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+        #controler que la video selectionnee n'est pas une pub inactive (couleur yellow3)
+            if self.bm.getColor(selVideoObj)=='yellow3':
+                raise CineException('PubOutOfDate')
+            if selVideoObj.duree ==0:
+                raise CineException('VideoDureeZero')
+            index = listWidget.curselection()[i]
+            bgVideo = listWidget.itemcget(index, "bg") #permet de recopier l'attribut couleur sur la PL
+            plIHM.insert(tk.END, selVideoIHM)
+            plIHM.itemconfig(tk.END, bg=bgVideo)
+            #mettre a jour la duree PL
+            dureeEnSecondes += selVideoObj.duree
         self.__setChampDisabledValue('entryDureePL', Util.secToms(dureeEnSecondes))
            
             
@@ -135,6 +140,23 @@ class EvtIHM(object):
         fiche = Fiche(tk, self)
         fiche.afficher(self.bm.rechercherVideo(selVideoIHM))
     
+    def afficheFrameCalendrierPL(self, tk):
+        '''
+        methode qui affiche la frame avec le calendrier des playlist 
+        p1: widget parent global tk
+        ''' 
+        cal = CalendarPL.Control(tk, onselect=lambda x: self.chargerPLWithDate(x), pm=self.pm)
+        cal.afficher()
+    
+    def playVideoWebcam(self):
+        '''
+        methode qui lance un vlc player(non bloquant) sur ecran pc avec la video temps reel webcam
+        '''
+        file='BA-test.flv'
+        vlcPlayer = PlayerVLC2.Player(None,  title='webcam hall cinema' , fullscreen=False )
+       # vlcPlayer.play(Util.configValue('commun', 'repertoireVideo') + file) #asynchrone
+        vlcPlayer.play(Util.configValue('commun', 'urlWebcam')) #asynchrone
+    
     def playVideoPC(self, tk):
         '''
         methode qui lance un vlc player(non bloquant) sur ecran pc avec la video selectionnee
@@ -145,6 +167,35 @@ class EvtIHM(object):
         vlcPlayer =  PlayerVLC2.Player(None,  title=selVideoObj.getNom() , fullscreen=False )
         vlcPlayer.play(Util.configValue('commun', 'repertoireVideo') + selVideoObj.nomFichier) #asynchrone
         
+    def supprimerFichier(self, tk):
+        '''
+        methode qui demande confirmation de la suppression d'une video puis si ok effectue la suppression
+        sur disque et dans la bibliotheque de(s)  video(s) selectionnee(s)
+        '''
+        if not messagebox.askyesno(Util.configValue('messages', 'BibliSuppVideoTitre'), 
+                                      Util.configValue('messages', 'BibliSuppVideoMsg')):
+               return
+        videosIHM =self._getCurrentVideoBibli(oneSelectionOnly=False)
+        for selVideoIHM in videosIHM:
+            selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+            self.bm.supprimerVideo(selVideoObj)
+        #reactualiser la vue
+        self.initialiserVideosBibliIHM()
+
+    def afficherRefPL(self, tk):
+        '''
+        methode qui calcule une liste de PL referencant le film de la selection
+        affiche dans une frame la liste des PL trouvees
+        '''
+        selVideoIHM =self._getCurrentVideoBibli()
+        selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+        listPL = self.pm.rechercherPLAvecVideo(selVideoObj)
+        if len(listPL)==0:
+            self._majStatusPL('refPlKO')
+        else:
+            f = FrameRefPL.ReferencesPL(tk, self)
+            f.afficher(selVideoIHM, sorted(listPL, key=lambda t:t.date))
+          
     def enregistrerVideoBiblioGenerale(self, video:Video):
     
         '''
@@ -217,6 +268,9 @@ class EvtIHM(object):
         
         self.vlcPlayer =  PlayerVLC2.Player(wdw, \
                                        title='playlist beaulieu' , fullscreen=True, geometry=geometry, paramVLC=paramVLC )
+        #on force le volume a 100
+        self.vlcPlayer.volume_var.set(100)
+        self.vlcPlayer.volume_sel(None) #envoie message init volume
         #on desactive le bouton play
         self.bibliIHM.getId('btnPlay').config(state=tk.DISABLED)
         self.__itererPlayPL(playlistIHM, pbarIHM, timerIHM, -1, self.vlcPlayer)  
@@ -326,7 +380,8 @@ class EvtIHM(object):
     
         '''
         methode qui supprime la selection courante de la playlist
-        p1, playlistIHM
+        p1: evt touche suppr
+        p2, playlistIHM
        
         '''
         
@@ -360,7 +415,32 @@ class EvtIHM(object):
         '''
         ap = AdminPassword.PassIHM(tk, self.bm, bibliVue)
         ap.afficher()
-            
+    
+    def chargerPLWithDate(self, datePL):
+        '''
+        methode qui recupere le fichier pl a partir de la date
+        la datePL ne doit contenir qu'une seule PL
+        remplit les widgets afferent à la playlist à partir de l'objet modele playlist
+        '''
+        try:
+            plFichierDate = self.pm.rechercherPLprocheDate(datePL)
+            self.chargerPL(plFichierDate) 
+        except CineException:
+            #clic sur un jour a 0 playlist
+            self._majStatusPL('NoPLTrouve', '', 6)
+     
+    def chargerSelectionPL(self, evt):
+        '''
+        methode qui charge la PL à partir de la selection de la widget
+        '''
+        widgetRefPL = self.bibliIHM.getId('listRefPL')
+        if not widgetRefPL.curselection():
+            raise CineException('selectionPLKO')
+        index = widgetRefPL.curselection()[0]
+    # get the line's text
+        selPL = widgetRefPL.get(index)
+        self.chargerPL(selPL+'.obj')
+        
     def chargerPL(self, pnomPL=None):
         '''
         p1 si à l'init de l'ihm pour charger la playlist du jour
@@ -421,19 +501,26 @@ class EvtIHM(object):
             widget.insert(0, val)
             widget.config(state=tk.DISABLED)
     
-    def _getCurrentVideoBibli(self):
+    def _getCurrentVideoBibli(self, oneSelectionOnly=True):
         '''
         methode qui retourne la selection video de la liste
+        p1 param booleen autorisant ou non la multiple selection des videos
         '''
     # get selected line index
         listWidget = self.bibliIHM.getId('listVideos')  
         
         if not listWidget.curselection():
             raise CineException('selectionVideoKO')
-        index = listWidget.curselection()[0]
+        if oneSelectionOnly and  len(listWidget.curselection())>1:
+            raise CineException('selectionVideoMultipleKO')
+        listSelVideo = []
+        for index in listWidget.curselection():
     # get the line's text
-        selVideo = listWidget.get(index)
-        return selVideo
+            listSelVideo.append(listWidget.get(index))
+        if oneSelectionOnly:
+            return listSelVideo[0]
+        else:
+            return listSelVideo
     
         '''methode qui met a jour le libelle du label pour le status des PL'''
     def _majStatusPL(self, codeMessageInfo, param="", duree=8, clignotant=False):
@@ -473,13 +560,17 @@ class EvtIHM(object):
         #on prend la video suivante de la liste si il en reste dans la liste
         if (rangPLAjouer >= 0):
             playlistIHM.itemconfig(rangPLAjouer, bg ='black') #ligne grisee donc traitee
+        
         rangPLAjouer+=1
        # playlistIHM.selection_set(rangPLAjouer)
         if (rangPLAjouer < playlistIHM.size()):
             playlistIHM.itemconfig(rangPLAjouer, bg ='red')    
                 
             selVideoIHM = playlistIHM.get(rangPLAjouer)
-            selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+            try:
+                selVideoObj = self.bm.rechercherVideo(selVideoIHM)
+            except CineException:
+                selVideoObj = None    
             if selVideoObj:
                 #video bien trouvee
                 #lancement de la barre de progression
@@ -496,7 +587,7 @@ class EvtIHM(object):
                 #Une video est presente dans la PL mais plus sur le disque
                 #affichage d'un message et passage au suivant
                 self._majStatusPL('NoVideoTrouve', selVideoIHM, 30) 
-                rangPLAjouer+=1       
+                       
                 #appel recursif
             self.__itererPlayPL(playlistIHM, pbarIHM, None, rangPLAjouer, vlcPlayer) #None pour le timer pour ne plus faire le controle avec videoFinished
         else:

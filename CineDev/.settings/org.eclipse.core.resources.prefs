@@ -1,6 +1,15 @@
 eclipse.preferences.version=1
+encoding//Controleur/BiblioManager.py=utf-8
+encoding//Controleur/PlayListManager.py=utf-8
+encoding//Modele/AnimationBeaulieu.py=utf-8
+encoding//Modele/BA.py=utf-8
+encoding//Modele/OeuvreCinematographique.py=utf-8
+encoding//Modele/PUB.py=utf-8
 encoding//Vue/BibliothequeVue.py=utf-8
 encoding//Vue/EvtProxy.py=utf-8
+encoding//Vue/FicheVideo.py=utf-8
 encoding//Vue/widget/PlayerVLC2.py=utf-8
+encoding//Vue/widget/PlayerVLCLight.py=utf-8
+encoding//Vue/widget/TimerBA.py=utf-8
 encoding//transverse/Util.py=utf-8
 encoding/Cinetix.py=utf-8

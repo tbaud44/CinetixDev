@@ -3,8 +3,7 @@ Created on 1 nov. 2017
 
 
 @author: Thierry baudouin
-code repris et adapte à partir du source
-https://forum.videolan.org/viewtopic.php?t=128595 
+classe thread permettant de detecter nouvelles videos
 '''
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
@@ -27,7 +26,8 @@ class DureeVideos(Thread):
         Thread.__init__(self)
         self.bm = bm #biblioManager
         self.repVideos = repVideos
-
+    
+    #methode principale
     def run(self):
         player =  PlayerVLCLight.Player() #player utilisé pour calcuker duree video
         #on stocke temporairement les videos du repertoire
@@ -35,10 +35,13 @@ class DureeVideos(Thread):
         for videoFile in Util.listerRepertoire(self.repVideos, False):
             if not videoFile in self.bm.biblioGenerale.videos:
                 #nouveau fichier video donc on ajoute on dico memoire
+                #print ("Analyse video ",videoFile)
+                
                 dureeVideo = player.GetDurationVideo(videoFile, self.repVideos)
                 mm, ss = divmod(dureeVideo, 60)
-                print ("video et duree:",videoFile, mm,ss)
-                
+                nomficVideoSansAccent = videoFile.encode( 'ascii', errors='ignore' ).decode('mbcs') 
+                print ("video et duree:",nomficVideoSansAccent, mm,ss)
+  
                 newVideo = Video(videoFile, dureeVideo)
                 try:
                     mtime = os.path.getmtime(str(os.path.join(self.repVideos, videoFile)))
@@ -47,8 +50,8 @@ class DureeVideos(Thread):
                     print ("Problem parsing date fichier " + videoFile)
                 last_modified_date = date.fromtimestamp(mtime)
                 newVideo.setDateFichier(last_modified_date)
-                #Par choix de jean marc, creation par defaut d'une B.A
-                videosRepertoireTemp[videoFile]=BA(newVideo)
+                #crrer un objet video (ba animBeaulieu ou pub)
+                videosRepertoireTemp[videoFile]=self.bm.construitObjetVideo(newVideo)
             else:
                 #on recopie l'objet video existant
                 videosRepertoireTemp[videoFile]=self.bm.biblioGenerale.videos[videoFile]    

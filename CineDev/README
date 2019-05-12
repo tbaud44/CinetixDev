@@ -29,7 +29,7 @@ specifique driver carte PC BA
 -----------------------------
 	Installer les pilotes/utilitaires de la carte ATI Radeon (AMD Catalist Controler center)
 		Desktop2(cinema): 1360*768 60 Hz 32 bits
-		Desktop 1(PC): 1360*1024 60 Hz 32 bits
+		Desktop 1(PC): 1280*1024 60 Hz 32 bits (au 04/05/2018) + ajuster ecran avec le menu
 		My digital Flat Panels:  scale image to full panel size	
 Python
 ------
@@ -61,7 +61,7 @@ Modifier au besoin le fichier resources/config.ini en positionant le repertoire 
 Avec un terminal (cmd dos ou shell) :
  position chemin appli variable CINEPATH dans cinetix.bat ou cinetix.sh ainsi que le chemin du bianire python
  executer cinetix.sh(bat) 
-
+lien bureau PC-BA: C:\Users\PC-BA\git\CinetixDev\CineDev\bin\cinetixV3.vbs
 
 Installation (Mode developpeur)
 *******************************
@@ -85,7 +85,7 @@ pydev - http://www.pydev.org/updates
 Eclipse - application CINETIX
 -----------------------------
 application ecrite en python permettant la gestion des bandes annonces du cinema
-Prerequis: creer un compte github sur https://github.com/ (gratuit :))
+Prerequis: creer un compte github sur https://github.com/ (gratuit :))tbaud44/bretagne44
 Suivre guide sur https://openclassrooms.com/courses/egit-quand-git-s-invite-dans-eclipse (Importer un projet hébergé sur GitHub)
 L'URI du depot github est: https://github.com/tbaud44/CinetixDev (le depot est en visu public donc gratuit) et dossier CineDev
 
@@ -133,6 +133,5 @@ fonctionnalites à implementer (non codée à ce jour le 05/08)
 		1 1 playlist pour ce jour (un clique sur le jour charge la PL correspondante)(coloration de la case jour spécifique)
 		2 ou 3 ... plusieurs playlists pour ce jour (coloration de la case jour spécifique)
 		Calcul à partir de la date du jour -n jusqu'a la date du jour + m (intervalle de temps fixe)
-	-Affichage dans une frame de la video en lecture issue de la webcam installée dans le hall du cinema (demande de bernard)			
-
-
+	-Affichage dans une frame de la video en lecture issue de la webcam installée dans le hall du cinema (demande de bernard)	
+	URL: rtsp://admin:beau58@192.168.1.140/profile5/media.smp (varier le profile)		

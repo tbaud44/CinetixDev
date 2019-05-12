@@ -50,8 +50,9 @@ class Player():
             # VLC player controls
         self.Instance = vlc.Instance("--vout", "dummy", "--no-audio"  )
         self.player = self.Instance.media_player_new()
+        self.dureeSleepBase=1
+        self.dureeSleepMax=3
 
-    
     def OnExit(self, evt):
         """Closes the window.
         """
@@ -94,12 +95,20 @@ class Player():
         return self.player.get_length() / 1000
     
     
-    def GetDurationVideo(self, nomVideo, repertoire):
-        self._OnOpen(str(os.path.join(repertoire, nomVideo)))
-                
-        self._OnPlay()
-        time.sleep(1) #on attend une seconde pour que vlc charge entete
+    def GetDurationVideo(self, nomVideo, repertoire, lectureEnCours=False):
+        if not lectureEnCours:
+            #premier lancement player. on charge la video dans vlc
+            self._OnOpen(str(os.path.join(repertoire, nomVideo)))        
+            self._OnPlay()
+        time.sleep(self.dureeSleepBase) #on attend duree par defaut pour que vlc charge entete
         duration = self._GetDurationCurrentPlaying()
-        self._OnStop()
-        return duration       
+        if duration>0:
+            self._OnStop() #instruction qui plante depuis 20/02/2018
+            return duration
+        elif self.dureeSleepBase>self.dureeSleepMax:
+            self._OnStop()
+            return 0 #un message d'erreur sera affiche en cas utilisation dans une PL (evite boucle infinie)
+        else:
+            self.dureeSleepBase+=1 #on incremente de 1 sec
+            return self.GetDurationVideo(nomVideo, repertoire, lectureEnCours=True)   #nouvelle tentative avec 1 seconde de plus    
     

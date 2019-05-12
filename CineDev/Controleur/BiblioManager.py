@@ -21,10 +21,13 @@ from Modele.Biblio import Biblio
 from Modele.OeuvreCinematographique import Oeuvre
 from Modele.Video import Video, Type
 from Modele.BA import BA
+from Modele.PUB import PUB
+
 from Vue.widget import PlayerVLCLight
 from transverse.CinetixException import CineException, CineWarning
 from transverse.Util import Util
 from transverse.GestionDureeVideo import DureeVideos
+from Modele.AnimationBeaulieu import AnimationBeaulieu
 
 class BiblioManager(object):
     '''
@@ -59,10 +62,14 @@ class BiblioManager(object):
         supprime les videos qui n'ont plus de fichier sur disque
         permet de ne plus gerer en memoire les anciennes videos
         '''
+        #on clone le dictionnaire
+        clonebibVideos = self.biblioGenerale.videos.copy()
         for videoFile in self.biblioGenerale.videos.values():
             if not os.path.isfile(Util.configValue('commun', 'repertoireVideo') + videoFile.nomFichier):
-                del self.biblioGenerale.videos[videoFile.nomFichier]
-                
+                del clonebibVideos[videoFile.nomFichier]
+        #on met le clone eventuellement modifie par le del dans l'objet
+        self.biblioGenerale.videos = clonebibVideos
+                 
     def save(self):
         '''
         sauvegarde la biblioGenerale dans un fichier bib.obj
@@ -102,6 +109,19 @@ class BiblioManager(object):
                 return "yellow3" 
         return video.color
      
+    def construitObjetVideo (self, video:Video):
+        '''
+        construit un objet herite de Video: pub ou BA ou animation beaulieu
+        '''
+        retour = re.search(r"PUB", video.nomFichier)
+        if retour:
+            return PUB(video)
+        
+        retour = re.search(r"\d\d\s+\d\d\s*-\s*\d\d\s+\d\d.mpg", video.nomFichier)
+        if retour:
+            return AnimationBeaulieu(video)
+        #sinon par defaut retourne BA
+        return BA(video)
     
     def scanDisk(self):
         '''
@@ -134,6 +154,24 @@ class BiblioManager(object):
         suppression ancienne reference video'''
         self.biblioGenerale.videos[video.nomFichier]=video
     
+    def supprimerVideo(self, video:Video):
+        '''suppression dans la bibliotheque la video
+        suppression sur disque dur du fichier video'''
+        repVideos=Util.configValue('commun', 'repertoireVideo')
+        #test si repVideos est bien un repertoire lisible
+        if not os.path.isdir(repVideos):
+            raise CineException('repVideoKO')
+            return
+        if not os.path.isfile(repVideos + video.nomFichier):
+            raise CineException('ficVideoKO')
+            return
+        #suppression du fichier
+        os.remove(repVideos + video.nomFichier)
+        #suppression dans la bibliotheque
+        del self.biblioGenerale.videos[video.nomFichier]
+   
+       
+        
     def rechercherVideo(self, idVideo):
         '''recherche une video selon son nomfichier ou titre.
             retourne l'objet video associé à sa clef

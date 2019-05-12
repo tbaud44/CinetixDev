@@ -25,6 +25,7 @@ class PlayListManager(object):
         Constructor
         '''
         self.bm = bm  #acces aux videos de la bibli
+        self.statPL = {}  #nombre de pl par jour
         
     def calculerNomIHMPL(self, pl : PlayList):
         'retourne un triple nom,date,heure au format string de la playlist'
@@ -54,7 +55,7 @@ class PlayListManager(object):
             
         except ValueError:
             raise CineException("formatDateKO")    
-        nomPL = "PL__" + d.strftime('%d-%m-%Y') +'__' + heure
+        nomPL = "PL__" + d.strftime('%Y-%m-%d') +'__' + heure
         return (nomPL,d,h)
     
     def existeFichierPL(self, date):
@@ -113,21 +114,44 @@ class PlayListManager(object):
             raise CineException('lecturePLKO')
         return objPL
     
+    def calculerStatPL(self):
+        '''
+        recherche toutes les playlist sur le disque
+        stocke dans un dictionnaire le nombre de PL par jour
+        '''
+                    #on stocke l'heure du fichier
+        ficPL = Util.listerRepertoire(Util.configValue('commun', 'repertoirePL'), False)
+        for fichier in ficPL:
+            retour = re.match(r"PL__([\d]{4})-([\d]{2})-([\d]{2})__([\d]{2})h00.obj", fichier)          
+            if retour:    
+                jjmmaaaaFichier=retour.group(3) +'-'+ retour.group(2) +'-'+retour.group(1) #ex 09112017
+                self.statPL['PL'+jjmmaaaaFichier] = self.statPL.get('PL'+jjmmaaaaFichier, 0) + 1
+                
+    def getStatPL(self, annee, mois, jour):
+        '''
+        retourne le nombre de paylist trouvee pour un jour donné
+        retourne 0 si jour non present dans dic
+        '''
+        if len(self.statPL)==0:
+            self.calculerStatPL()
+        return self.statPL.get("PL%2s-%02d-%04d" %(jour,mois,annee), 0)
+                    #on stocke l'heure du fichier
+                
     def rechercherPLprocheDate(self, pdate):
         '''
         p1 date recherche de la PL selon cette date
         recherche toutes les playlist du meme jour que la date parametre
         si recherche > 1 playlist, on choisit celle qui est le plus proche de l'heure
         retourne le nom du fichier de la playlist'''
-        jjmmaaaaParam=pdate.strftime('%d%m%Y') #ex 20170321
+        jjmmaaaaParam=pdate.strftime('%d%m%Y') #ex 21032017
         heureParam=pdate.strftime('%Hh%M') #ex 15h00
         PLcriteresOK = [] #tableau des playlists qui ont le jour ok par rapport au parametre
                     #on stocke l'heure du fichier
         ficPL = Util.listerRepertoire(Util.configValue('commun', 'repertoirePL'), False)
         for fichier in ficPL:
-            retour = re.match(r"PL__([\d]{2})-([\d]{2})-([\d]{4})__([\d]{2})h00.obj", fichier)          
+            retour = re.match(r"PL__([\d]{4})-([\d]{2})-([\d]{2})__([\d]{2})h00.obj", fichier)          
             if retour:    
-                jjmmaaaaFichier=retour.group(1)+retour.group(2)+retour.group(3) #ex 21032017
+                jjmmaaaaFichier=retour.group(3)+retour.group(2)+retour.group(1) #ex 21032017
                 heureFichier=retour.group(4)+'h00' #ex 15h00
                 if jjmmaaaaFichier==jjmmaaaaParam:
                     PLcriteresOK.append(retour.group()+':'+heureFichier)
@@ -137,7 +161,7 @@ class PlayListManager(object):
             #une seule PL matche donc on la retourne
             return PLcriteresOK[0].split(':')[0]
         #il faut faire une recherche en prenant l'heure la plus proche'
-        heurePlusProche = '00:00' # heure fictive pour initialiser recherche
+        heurePlusProche = None # heure fictive pour initialiser recherche
         for plTrouvee in PLcriteresOK:
             heurePL=plTrouvee.split(':')[1]
             if Util.heureCompare(heureParam, heurePL, heurePlusProche)<0:
@@ -145,3 +169,17 @@ class PlayListManager(object):
                         heurePlusProche=heurePL
         return plPlusProcheHeureParam
     
+    def rechercherPLAvecVideo(self, selVideoObj):
+        '''
+        methode qui recherche les playlist qui contiennent la video en parametre
+        retourne une liste de PL
+        '''
+        retour = []
+        ficPL = Util.listerRepertoire(Util.configValue('commun', 'repertoirePL'))
+        for fichier in ficPL:
+            plCur = self.load(fichier)
+            for video in plCur.videos:
+                if video.getNom() == selVideoObj.getNom(): 
+                    retour.append(plCur)
+        return retour     
+           

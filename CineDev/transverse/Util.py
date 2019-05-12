@@ -16,6 +16,8 @@ class Util:
      
     config = configparser.ConfigParser()
     configDejaLue = False
+    unicodeExpEntier = {"exp0": "\u2070", "exp1": "\u00B9", "exp2": "\u00B2", "exp3": "\u00B3",
+                        "exp4": "\u2074", "exp5": "\u2075", "exp6": "\u2076"   }
     
     def configValue(rubrique, clef):
         if not(Util.configDejaLue):
@@ -41,14 +43,20 @@ class Util:
     
     getFont = staticmethod(getFont)
 
+    '''retourne le caractere unicode d'un entier sous forme exposant'''
+    def getUnicodeCharExposant(entier):
+        return Util.unicodeExpEntier['exp'+str(entier)]
+    
+    getUnicodeCharExposant = staticmethod(getUnicodeCharExposant)
+
     def listerRepertoire(path, cheminAbsolu=True):  
         fichier=[]  
         for root, dirs, files in os.walk(path):  
-            for i in files:
+            for f in files:
                 if (cheminAbsolu):  
-                    fichier.append(os.path.join(root, i))
+                    fichier.append(os.path.join(root, f))
                 else:
-                    fichier.append(i) 
+                    fichier.append(f) 
             return fichier
     listerRepertoire = staticmethod(listerRepertoire)
     
@@ -83,8 +91,12 @@ class Util:
 
     def heureCompare(heureReference, heure1, heure2):
         '''heure sont au format hh:mm'''
+        '''heure2 peut etre null'''
         '''si heure1 est plus proche de heureReference alors retourne -1'''
         '''si heure2 est plus proche de heureReference alors retourne 1'''
+        if not heure2:
+            return -1
+        
         dref = datetime.datetime (2000, 1, 1,int(heureReference[:2]), int(heureReference[3:5]))    
         d1 = datetime.datetime(2000, 1, 1,int(heure1[:2]), int(heure1[3:5]))    
         d2 = datetime.datetime(2000, 1, 1,int(heure2[:2]), int(heure2[3:5]))    
@@ -97,5 +109,10 @@ class Util:
             return 1
     heureCompare = staticmethod(heureCompare)
     
-    
+    '''
+    methode qui compare date param a la date du jour
+    '''
+    def estDateAnterieurAujourdhui(annee, mois, jour):
+        return datetime.date.today() > datetime.date(int(annee), int(mois), int(jour))
+    estDateAnterieurAujourdhui = staticmethod(estDateAnterieurAujourdhui)
     
