@@ -210,7 +210,8 @@ class BiblioManager(object):
         '''
         dateFormatUrl=jourDiffusion[:2]+'%2F'+jourDiffusion[2:4]+'%2F'+jourDiffusion[4:8]
         heureDiffusion=jourDiffusion[8:10]+':00'
-        url = 'https://www.cinemalebeaulieu.com/programme.php?searchMode=date&RechercherDate='+dateFormatUrl
+        url = 'http://www.cinemalebeaulieu.com/programme.php?searchMode=date&RechercherDate='+dateFormatUrl
+        '''bug https avril 2019'''
         request = urllib.request.Request(url)
         try:
             response = urllib.request.urlopen(request)
@@ -226,7 +227,7 @@ class BiblioManager(object):
         for filmProjete in articles:
             seance=filmProjete.find(class_="seance")
             if seance:    
-                heureSeance=seance.find(class_="showtime").getText() #Ex: 18h00
+                heureSeance=seance.find(class_="showtime").find_next("span").getText() #Ex: 18h00
                 # peut avoir 18h00 VO donc supprimer le VO
                 heureSeanceFormattee = re.match(r"([\d]{2}):([\d]{2}).*", heureSeance)          
             
@@ -244,6 +245,8 @@ class BiblioManager(object):
         #parsing des balises images de la page html
         image=articlePlusProcheHeureParam.find("img")
         urlImage=image['src']
+        '''bug librairie URL depuis avril 2019, impossible de requeter en https : solution utiliser http'''
+        urlImage=urlImage.replace('https', 'http')
         urlImagePetite = urlImage.replace('ratio=0.5', 'ratio=0.2')
         #on calcule 2 images de taille differente
         titre = articlePlusProcheHeureParam.find(class_="titre").getText()
